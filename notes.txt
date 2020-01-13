@@ -1,0 +1,17 @@
+Fortsättning: 
+- add onlineUsers component - tips: titta på this.currentUser. 
+Om du console loggar "console.log(this.currentUser.rooms[3].userIds)" så får du fram 
+användarnamn. Sen kan du använda ui-avatars.com för att göra avatarer av personens initialer.
+- add typing indicators. Kika på room subscription hooks. Där finns bland annat onUserStartedTyping.
+De kan läggas till som hooks på subscribeToRoom så här: 
+    onUserStartedTyping: user => {
+        /** render out the users */
+    }
+
+
+
+
+
+Koppla php med React:
+
+Göra Databasuppkoppling med PHP som ett restAPI? hur skulle det se ut?
