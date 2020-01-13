@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import LogOut from './LogOut';
 
 // import logo from '../../assets/logo.png'
 
@@ -19,6 +20,7 @@ const Header = () => {
                     <li><Link to="/my-account">Mitt Konto</Link></li>
                 </ul>
             </div>
+            <LogOut />
         </div>
     )
 }

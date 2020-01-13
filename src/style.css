@@ -65,8 +65,8 @@ html, body {
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-areas: 
         "logo menu menu menu . ."
-        "logo menu menu menu . ."
-        "logo menu menu menu . .";
+        "logo menu menu menu . logOut"
+        "logo menu menu menu . logOut";
 }
 /* 
                             Header/Logo
@@ -104,6 +104,19 @@ html, body {
 }
 .menuList > li > a {
     color: var(--secondary-text-color);
+}
+
+/* 
+                            Header/logout
+*/
+.logOut {
+    grid-area: logOut;
+}
+.logOut > button {
+    width: 50%;
+    height:100%;
+    font-weight: bold;
+    font-size: 1.2em;
 }
 /* _____________________________________________________________________________ */
 
@@ -166,6 +179,19 @@ html, body {
     display:block;
     font-weight: bold;
 }
+/* _____________________________________________________________________________ */
+
+/* 
+
+/* 
+                            MyAccount
+*/
+.myAccount {
+    width:50%;
+    margin:auto;
+    text-align: center;
+}
+
 /* _____________________________________________________________________________ */
 
 /* 

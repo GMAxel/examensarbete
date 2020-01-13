@@ -24,6 +24,8 @@ spl_autoload_register(function ($class_name) {
 });
 
 $bodyData = json_decode(file_get_contents('php://input'));
+echo json_encode($bodyData);
+die;
 $actionRequest = $bodyData->action;
 
 $user = new User();
@@ -58,6 +60,15 @@ switch($actionRequest) {
     case 'myAccount': 
 
 
+    break;
+
+    case 'checkLoggedIn':
+        $result = $user->checkIfLoggedIn();
+        echo json_encode($result);
+    break;
+    
+    case 'logOut' : 
+        $user->logOut();
     break;
 
 }

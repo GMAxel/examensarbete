@@ -63,7 +63,8 @@ class User {
             $obj = (object) [
                 'id' => $userData[0]->id,
                 'firstName' => $userData[0]->firstName,
-                'lastName' => $userData[0]->lastName
+                'lastName' => $userData[0]->lastName,
+                'username' => $userData[0]->username
             ];
             return $obj;
         } 
@@ -89,6 +90,10 @@ class User {
 
     public function logOut() {
         $_SESSION = array();
+    }
+
+    public function checkIfLoggedIn() {
+        return $_SESSION['loggedIn'];
     }
 
     // public function checkCredentials($username, $password) {

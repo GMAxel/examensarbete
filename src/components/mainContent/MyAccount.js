@@ -1,39 +1,18 @@
-import React, {useEffect} from 'react'
-import Axios from 'axios';
-import DataContext from '../../contexts/DataProvider';
-
-const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
+import React, { useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const MyAccount = () => {
-
-    // useEffect(() => {
-    //     Axios.get(API_PATH, {
-    //         action: 'myAccount',
-    //     })
-    //     .then((response) => {
-    //         console.log(response)
-    //         // Rerouta användaren vid sucess.
-    //     })
-    //     .catch((error) => {
-    //         console.log(error.response);
-    //         // Visa felet för användaren.
-    //     })
-    //     .finally(function () {
-    //         // always executed
-    //     });    
-    // }) 
-    
-
-    return (
-        <div className="mainContentStyle">
-            {/* <DataContext.Consumer>
-                {(context) => (
-                    <p>Hello</p>
-                )}
-            </DataContext.Consumer> */}
+    const {isAuthenticated, firstName, lastName, username} = useContext(AuthContext);
+    return ( 
+        <div className={'mainContentStyle'}>
+            <div className={'myAccount'}>
+                <h3>Kontouppgifter: {isAuthenticated}</h3>
+                    <p>Förnamn: {firstName}</p>
+                    <p>Efternamn: {lastName}</p>
+                    <p>Användarnamn: {username}</p>
+            </div>
         </div>
-    
-    )
+     );
 }
-
+ 
 export default MyAccount;
