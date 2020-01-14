@@ -1,8 +1,6 @@
 import React, {useReducer, useContext} from 'react'
 import { AuthContext } from '../../contexts/AuthContext';
 import Axios from 'axios';
-
-
 const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
 const LogIn = () => {
@@ -13,19 +11,16 @@ const LogIn = () => {
                 password: ''
             }
     )
-    const {onLogIn} = useContext(AuthContext);
-
-
     const handleChange = (e) => {
         const name = e.target.name;
         const newValue = e.target.value;
         setUserInput({[name]: newValue})
     }
-
     /**
      * Använder post istället för get då det ska vara säkrare.
      * Get tenderar att lagra data i cache och liknande. 
      */
+    const {onLogIn, userData} = useContext(AuthContext);
     const handleSubmit = (e) => {
         e.preventDefault();
         Axios.post(API_PATH, {
@@ -38,10 +33,6 @@ const LogIn = () => {
         .then((response) => {
             console.log(response)
             onLogIn(response.data);
-            window.localStorage.setItem('firstName', response.data.firstName);
-            window.localStorage.setItem('lastName', response.data.lastName);
-            window.localStorage.setItem('username', response.data.username);
-            // Rerouta användaren vid sucess.
         })
         .catch((error) => {
             console.log(error.response);
@@ -51,6 +42,7 @@ const LogIn = () => {
             // always executed
         });
     }
+    const data = userData.isAuthenticated ? userData.username : null;
     return (
         <div className="mainContentStyle">
             <form 
@@ -58,6 +50,7 @@ const LogIn = () => {
                 onSubmit={handleSubmit}
             >
                 <h3>Sign In </h3>
+                {data}
                 <ul>
                     <li>
                         <label>Username</label>

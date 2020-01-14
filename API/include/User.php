@@ -59,7 +59,6 @@ class User {
         $this->isLoggedIn = password_verify($filt_password, $hash);
         
         if($this->isLoggedIn) {
-            $_SESSION['loggedIn'] = true;
             $obj = (object) [
                 'id' => $userData[0]->id,
                 'firstName' => $userData[0]->firstName,
@@ -68,7 +67,7 @@ class User {
             ];
             return $obj;
         } 
-        return $_SESSION['loggedIn'];
+        return false;
     }
 
     public function getUsers() {
@@ -87,23 +86,6 @@ class User {
         $result = $stmt->fetchAll(PDO::FETCH_OBJ);
         return $result;
     }
-
-    public function logOut() {
-        $_SESSION = array();
-    }
-
-    public function checkIfLoggedIn() {
-        return $_SESSION['loggedIn'];
-    }
-
-    // public function checkCredentials($username, $password) {
-    //     $sql = "SELECT username FROM $this->table WHERE username = '$username'";
-    //     $stmt = $this->db->prepare($sql);
-    //     $stmt->execute();
-    //     $result = $stmt->fetchAll(PDO::FETCH_OBJ);
-    //     return $result;
-    // }
-
 }
 
 /**

@@ -2,14 +2,13 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 
 const MyAccount = () => {
-    const {isAuthenticated, firstName, lastName, username} = useContext(AuthContext);
+    const {userData} = useContext(AuthContext);
     return ( 
         <div className={'mainContentStyle'}>
             <div className={'myAccount'}>
-                <h3>Kontouppgifter: {isAuthenticated}</h3>
-                    <p>Förnamn: {firstName}</p>
-                    <p>Efternamn: {lastName}</p>
-                    <p>Användarnamn: {username}</p>
+                    <p>Förnamn: {userData.firstName}</p>
+                    <p>Efternamn: {userData.lastName}</p>
+                    <p>Användarnamn: {userData.username}</p>
             </div>
         </div>
      );

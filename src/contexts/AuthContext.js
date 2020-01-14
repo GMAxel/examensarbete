@@ -1,51 +1,53 @@
 import React, { createContext, useState, useEffect } from 'react';
-import Axios from 'axios';
-const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
 export const AuthContext = createContext();
 
 const AuthContextProvider = (props) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [firstName, setFirstName] = useState(window.localStorage.getItem('firstName'));
-    const [lastName, setLastName] = useState(window.localStorage.getItem('lastName'));
-    const [username, setUsername] = useState(window.localStorage.getItem('userName'));
-
-    const [id, setId] = useState(null);
+    const [userData, setUserData] = useState({
+        firstName: '',
+        lastName:  '',
+        username: '',
+        id: '',
+        isAuthenticated: false,
+        logOut: false        
+    })
+    useEffect(() => {
+        // Om användaren inte är autentiserad, 
+        // Det finns en session. 
+        // Användaren har inte tryckt på att logga ut, 
+        // skapa state från sessionStorage.
+        if(!userData.isAuthenticated && sessionStorage.getItem('userData') 
+        && !userData.logOut) {
+            setUserData(JSON.parse(sessionStorage.getItem('userData')));
+        }
+        // Om användaren är autentiserad lagra state i sessionstorage.
+        if(userData.isAuthenticated) {
+            sessionStorage.setItem('userData', JSON.stringify(userData));
+        } 
+        // Om användaren inte är autentiserad, 
+        // det finns data i state,
+        // 
+        else if(userData.firstName !== ''){
+            sessionStorage.setItem("userData", '');
+            sessionStorage.clear();
+        }
+    }, [userData])
 
     const onLogIn = (userData) => {
-        setFirstName(userData.firstName);
-        setLastName(userData.lastName);
-        setId(userData.id);
-        setUsername(userData.username)
-        setIsAuthenticated(true);
-        // window.localStorage.setItem('firstName', response.data.firstName);
-        // window.localStorage.setItem('lastName', response.data.lastName);
-        // window.localStorage.setItem('username', response.data.username);
+        const {firstName, lastName, username, id} = userData;
+        setUserData({
+            firstName,
+            lastName,
+            username,
+            id,
+            isAuthenticated: true
+        })
     }
-
     const onLogOut = () => {
-        window.localStorage.clear();
+        setUserData({isAuthenticated: false, logOut: true});
     }
-
-    useEffect(() => {
-        Axios.get(API_PATH, {
-            action: 'checkLoggedIn'
-        })
-        .then((response) => {
-            console.log(response)
-            // Rerouta användaren vid sucess.
-        })
-        .catch((error) => {
-            console.log(error.response);
-            // Visa felet för användaren.
-        })
-        .finally(function () {
-            // always executed
-        });
-    })
-    
     return (
-        <AuthContext.Provider value={{isAuthenticated, onLogIn, onLogOut, firstName, lastName, id, username}}>
+        <AuthContext.Provider value={{ onLogIn, onLogOut, userData }}>
             {props.children}
         </AuthContext.Provider>
     )

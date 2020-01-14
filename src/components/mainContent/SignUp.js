@@ -3,7 +3,7 @@ import Axios from 'axios';
 
 const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
-const CreateAccountForm = () => {
+const SignUp = () => {
     const [userInput, setUserInput] = useReducer( 
         (state, newState) => ({...state, ...newState}),
             {
@@ -108,4 +108,4 @@ const CreateAccountForm = () => {
     )
 }
 
-export default CreateAccountForm;
+export default SignUp;
