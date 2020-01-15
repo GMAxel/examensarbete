@@ -12,7 +12,8 @@ class ChatKitHandler {
   }
   public function authUser($id) {
     $filt_id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    $this->chatkit->authenticate([ 'user_id' => $filt_id ]);
+    $result = $this->chatkit->authenticate([ 'user_id' => $filt_id ]);
+    return $result;
   }
 
   public function createUser($id, $name) {

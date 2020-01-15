@@ -37,10 +37,14 @@ switch($request_method) {
             case 'logIn': 
                 $username  = $bodyData->data->username;
                 $pass      = $bodyData->data->password;
-                $loggedIn = $user->logIn($username, $pass);
-                if($loggedIn) { 
+                $loggedInUser = $user->logIn($username, $pass);
+                if($loggedInUser) { 
+                    $chatKitHandler = new ChatKitHandler();
+                    $userLoggedIn = $chatKitHandler->authUser($loggedInUser->id);
+                    $loggedInUser->accessToken = $userLoggedIn['body']['access_token'];
+                    $loggedInUser->expiresIn = $userLoggedIn['body']['expires_in'];
                     http_response_code(200);
-                    echo json_encode($loggedIn);
+                    echo json_encode($loggedInUser);
                 } else {
                     http_response_code(400);
                     echo json_encode($user->msg);
