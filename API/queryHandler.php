@@ -54,8 +54,11 @@ switch($request_method) {
                 $pass      = $bodyData->data->password;
                 $result = $user->create($firstName, $lastName, $username, $pass);
                 if($result) {
+                    $chatKitHandler = new ChatKitHandler();
+                    $userCreated = $chatKitHandler->createUser($result, $firstName . ' ' . $lastName);
+                    // If(userWasNotCreated) { delete user from our database. }
                     http_response_code(200);
-                    echo json_encode($result);
+                    echo json_encode($userCreated);
                 } else {
                     http_response_code(400);
                     echo json_encode($user->msg);

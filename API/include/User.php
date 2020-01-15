@@ -45,7 +45,11 @@ class User {
         $stmt->bindValue(':username',   $filt_username);
         $stmt->bindValue(':pass',       $hash);
         $result = $stmt->execute();
-        return $result;
+        if($result) {
+            return $this->db->lastInsertId(); 
+        } else {
+            return false;
+        }
     }
     public function logIn($username, $pass) {
         $filt_username = filter_var($username, FILTER_SANITIZE_STRING);
