@@ -29,6 +29,58 @@ if($request_method === 'post') {
     $actionRequest = $bodyData->action;
 }
 
+
+// Get URI.
+$request_uri = $_SERVER['REQUEST_URI'];
+$request_uri = explode('queryHandler.php/', $_SERVER['REQUEST_URI'], 2);
+$request_uri = filter_var($request_uri[1], FILTER_SANITIZE_STRING);
+
+$user = new User();
+
+switch($request_uri) {
+    case 'login':
+        $username  = $bodyData->data->username;
+        $pass      = $bodyData->data->password;
+        $loggedInUser = $user->logIn($username, $pass);
+        if($loggedInUser) { 
+            $chatKitHandler = new ChatKitHandler();
+            $userLoggedIn = $chatKitHandler->authUser($loggedInUser->id);
+            $loggedInUser->accessToken = $userLoggedIn['body']['access_token'];
+            $loggedInUser->expiresIn = $userLoggedIn['body']['expires_in'];
+            http_response_code(200);
+            echo json_encode($loggedInUser);
+        } else {
+            http_response_code(400);
+            echo json_encode($user->msg);
+        }
+    break;
+
+    case 'signup': 
+        $firstName = $bodyData->data->firstName;
+        $lastName  = $bodyData->data->lastName;
+        $username  = $bodyData->data->username;
+        $pass      = $bodyData->data->password;
+        $result = $user->create($firstName, $lastName, $username, $pass);
+        if($result) {
+            $chatKitHandler = new ChatKitHandler();
+            $userCreated = $chatKitHandler->createUser($result, $firstName . ' ' . $lastName);
+            // If(userWasNotCreated) { delete user from our database. }
+            http_response_code(200);
+            echo json_encode($userCreated);
+        } else {
+            http_response_code(400);
+            echo json_encode($user->msg);
+        }
+    break;
+
+    case 'chat':
+        $chatKitHandler = new ChatKitHandler();
+        $users = $chatKitHandler->getUsers();
+        echo json_encode($users);
+    break;
+}
+die();
+
 $user = new User();
 
 switch($request_method) {
@@ -68,19 +120,12 @@ switch($request_method) {
                     echo json_encode($user->msg);
                 }
             break;
-        
-        
         }
         
     break;
 
     case 'get' :
-        $result = $user->checkIfLoggedIn();
-        if($result) {
-            echo ('inloggad');
-        } else {
-            echo 'Ej inloggad' . $result;
-        }
+        
     break;
 }
 die;

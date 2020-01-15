@@ -23,7 +23,7 @@ const LogIn = () => {
     const {onLogIn, userData} = useContext(AuthContext);
     const handleSubmit = (e) => {
         e.preventDefault();
-        Axios.post(API_PATH, {
+        Axios.post(API_PATH + '/login', {
             action: 'logIn',
             data: {
                 username:   userInput.username,
@@ -31,7 +31,6 @@ const LogIn = () => {
             }
         })
         .then((response) => {
-            console.log(response)
             onLogIn(response.data);
         })
         .catch((error) => {

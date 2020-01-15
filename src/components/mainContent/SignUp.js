@@ -23,7 +23,7 @@ const SignUp = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        Axios.post(API_PATH, {
+        Axios.post(API_PATH + '/signup', {
             action: 'newUser',
             data: {
                 firstName:  userInput.firstName,

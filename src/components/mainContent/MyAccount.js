@@ -9,6 +9,9 @@ const MyAccount = () => {
                     <p>Förnamn: {userData.firstName}</p>
                     <p>Efternamn: {userData.lastName}</p>
                     <p>Användarnamn: {userData.username}</p>
+                    <p>{userData.accessToken}</p>
+                    <p>{userData.expiresIn}</p>
+
             </div>
         </div>
      );

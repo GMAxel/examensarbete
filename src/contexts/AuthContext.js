@@ -9,7 +9,9 @@ const AuthContextProvider = (props) => {
         username: '',
         id: '',
         isAuthenticated: false,
-        logOut: false        
+        logOut: false,
+        accessToken: '',
+        expiresIn: null        
     })
     /**
      * Sätta default värde med
@@ -38,13 +40,15 @@ const AuthContextProvider = (props) => {
     }, [userData])
 
     const onLogIn = (userData) => {
-        const {firstName, lastName, username, id} = userData;
+        const {firstName, lastName, username, id, accessToken, expiresIn} = userData;
         setUserData({
             firstName,
             lastName,
             username,
             id,
-            isAuthenticated: true
+            isAuthenticated: true,
+            accessToken,
+            expiresIn,
         })
     }
     const onLogOut = () => {

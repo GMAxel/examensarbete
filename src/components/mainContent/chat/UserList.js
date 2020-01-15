@@ -1,8 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './resources/UserList.css';
 import defaultAvatar from './resources/default-avatar.png';
+import { AuthContext } from '../../../contexts/AuthContext';
+
+
 
 function UserList({ userId }) {
+  const {userData} = useContext(AuthContext);
+  console.log(userData);
+  
   return (
     <div className="UserList">
       <div className="UserList__titlebar">

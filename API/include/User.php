@@ -70,8 +70,9 @@ class User {
                 'username' => $userData[0]->username
             ];
             return $obj;
-        } 
-        return false;
+        } else {
+            return false;
+        }
     }
 
     public function getUsers() {

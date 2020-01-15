@@ -1,20 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {ChatkitProvider, TokenProvider} from '@pusher/chatkit-client-react'
-import { AuthContext } from '../../../contexts/AuthContext'
+import { AuthContext } from '../../contexts/AuthContext'
 import Axios from 'axios';
 
-import './resources/App.css';
-import MessageList from './MessageList';
-import UserList from './UserList';
 
-import { tokenUrl, instanceLocator } from './config'
+import { tokenUrl, instanceLocator } from './chat/config'
 const tokenProvider = new TokenProvider({
     url: tokenUrl,
   });
 
   const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
-const Chat = () => {
+const FindUsers = () => {
     const [users, setUsers] = useState([]);
     useEffect(() => {
         Axios.get(API_PATH + '/chat', {
@@ -45,11 +42,6 @@ const Chat = () => {
     const otherUserId="bob";
     return (
         <div className="mainContentStyle">
-            
-            <div className='chat'>
-                <div className='listHeader'>
-                    <p>Meddelanden</p>
-                </div>
                 <div className='userList'>
                     {users.map((user, index) => {
                         return (
@@ -61,22 +53,9 @@ const Chat = () => {
                         )
                     })}
                 </div>
-                <div className='messageHeader'>
-                    <p>Fredrik Reinfeldt</p>
-                </div>
-                <div className='messages'>
-                    <p>hello frank</p>
-                </div>
-                <div className='newMessage'>
-                    <input 
-                        type="text"
-                        placeholder="Skriv ett meddelande..."
-                    />
-                    <button>Skicka</button>
-                </div>
-            </div>
+                
         </div>
     )
 }
 
-export default Chat;
+export default FindUsers;

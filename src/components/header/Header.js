@@ -12,7 +12,7 @@ const Header = () => {
         <li><Link to="/my-account">Mitt Konto</Link></li>
         : 
         <React.Fragment>
-            <li><Link to="/create-account">Skapa Konto</Link></li>
+            <li><Link to="/signup">Skapa Konto</Link></li>
             <li><Link to="/login">Logga In</Link></li>
         </React.Fragment>
     return (
@@ -24,6 +24,7 @@ const Header = () => {
             </div>
             <div className='menu'>
                 <ul className='menuList'>
+                    <li><Link to="/findusers">Hitta användare</Link></li>
                     <li><Link to="/">Startsida</Link></li>
                     <li><Link to="/chat">Chat</Link></li>
                     {privateLinks}

@@ -34,8 +34,11 @@ html, body {
     font-weight: 200;
     box-sizing: border-box;
     background-color: var(--main-color);
-
   }
+
+p {
+    margin:0;
+}
 
 
   /* 
@@ -47,7 +50,7 @@ html, body {
     justify-items:stretch;
     align-items: stretch;
     grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: 1fr 10fr 2fr;
+    grid-template-rows: 1fr 10fr 1fr;
     grid-template-areas: 
         "header header header header header header"
         "main main main main main main"
@@ -117,6 +120,7 @@ html, body {
     height:100%;
     font-weight: bold;
     font-size: 1.2em;
+    cursor: pointer;
 }
 /* _____________________________________________________________________________ */
 
@@ -126,9 +130,9 @@ html, body {
 .mainContentStyle {
     grid-area: main;
     background-color: var(--main-color);
-    height:auto;
+    height:100%;
 }
-.mainContentStyle > p {
+.mainContentStyle > .drawing {
     display:block;
     width:394px;
     margin:auto;
@@ -179,8 +183,6 @@ html, body {
     display:block;
     font-weight: bold;
 }
-/* _____________________________________________________________________________ */
-
 /* 
 
 /* 
@@ -191,6 +193,108 @@ html, body {
     margin:auto;
     text-align: center;
 }
+
+
+/* 
+                            Chat
+*/
+.chat {
+    display:grid;
+    height:100%;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: 1fr 10fr 1fr;
+    grid-template-areas: 
+        ". listH listH messH messH messH messH ."
+        ". list list mess mess mess mess ."
+        ". list list newMess newMess newMess newMess .";
+}
+.userList {
+    grid-area:list;
+    background-color: #fefefe;
+    display:flex;
+    flex-direction: column;
+    border-right: 1px solid #e0e0e0;
+    box-sizing: border-box;
+}
+    .userList > .userListItem {
+        box-sizing: border-box;
+        border-bottom:4px solid black;
+        cursor: pointer;
+        display:grid;
+        grid-template-columns: 1fr 2fr 8fr 2fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-areas: 
+        ". name name time"
+        ". lastMsg lastMsg time"
+        ". lastMsg lastMsg .";
+        height:60px;
+        overflow: hidden;
+    }
+        .userList > .userListItem > .fullName {
+            grid-area:name;
+            font-weight: 700;
+            font-size:1.2em;
+        }
+        .userList > .userListItem > .lastMessage {
+            grid-area:lastMsg;
+        }
+        .userList > .userListItem > .timeStamp {
+            grid-area:time;
+        }
+
+
+.messages {
+    grid-area:mess;
+    background-color: #d0d0d0;
+}
+.newMessage {
+    grid-area:newMess;
+    background-color:#ededed;
+    display:flex;
+    padding:1rem;
+    box-sizing: border-box;
+}
+    .newMessage > input {
+        box-sizing: border-box;
+        border: none;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        width: 100%;
+        flex-grow: 1;
+    }
+    .newMessage > button {
+        border: 1px solid #c5c5c5;
+        background: none;
+        margin-left: 1rem;
+        padding: 0rem 1rem;
+        border-radius: 0.3rem;
+    }
+    
+
+.listHeader {
+    grid-area: listH;
+    background-color: #ededed;
+    border-right: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    font-weight: 700;
+    text-align: center;
+}
+    .listHeader > p {
+        position:relative;
+        top:50%;
+    }
+
+.messageHeader {
+    grid-area:messH;
+    background-color: #ededed;
+    box-sizing: border-box;
+    font-weight: 700;
+}
+    .messageHeader > p {
+        position: relative;
+        top:50%;
+        margin-left:5%;
+    }
 
 /* _____________________________________________________________________________ */
 
