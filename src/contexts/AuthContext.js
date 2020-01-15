@@ -11,6 +11,10 @@ const AuthContextProvider = (props) => {
         isAuthenticated: false,
         logOut: false        
     })
+    /**
+     * Sätta default värde med
+     * firstname: JSON.parse(sessionStorage.getItem('userData')).firstName;?
+     */
     useEffect(() => {
         // Om användaren inte är autentiserad, 
         // Det finns en session. 

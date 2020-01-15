@@ -25,6 +25,7 @@ const Header = () => {
             <div className='menu'>
                 <ul className='menuList'>
                     <li><Link to="/">Startsida</Link></li>
+                    <li><Link to="/chat">Chat</Link></li>
                     {privateLinks}
                 </ul>
             </div>
