@@ -102,7 +102,7 @@ const Chat = () => {
                         }
                         return (
                             <div 
-                                class={author} 
+                                className={author} 
                                 key={index}
                             >
 
