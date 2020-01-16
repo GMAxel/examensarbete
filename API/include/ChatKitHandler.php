@@ -42,5 +42,49 @@ class ChatKitHandler {
     $result = $this->chatkit->getUsers();
     return $result;
   }
+
+  public function startChat($user, $secondUser) {
+    $users_rooms = $this->getUsersRooms($user->id);
+    $secondUsers_rooms = $this->getUsersRooms($secondUser->id);
+    $inSameRoom = false;
+    for($i = 0; $i < count($users_rooms['body']); $i++) {
+      for($z = 0; $z < count($secondUsers_rooms['body']); $z++) {
+        if($users_rooms['body'][$i]['id'] === $secondUsers_rooms['body'][$z]['id'] ) {
+          $inSameRoom = $secondUsers_rooms['body'][$z]['id'];
+        }
+      }
+    }
+    
+    if($inSameRoom) {
+      // if they are in the same room, join room.
+      $messages = $this->chatkit->fetchMultipartMessages([
+        'room_id' => $inSameRoom
+      ]);
+      return $messages;
+    } else {
+      // if they are not in the same room, create room.
+      $result = $this->chatkit->createRoom([
+        'creator_id' => $user->id,
+        'name' => $user->name . ' & ' . $secondUser->name,
+        'user_ids' => [$secondUser->id],
+        'private' => true,
+      ]);
+      return $result;
+
+      
+    }
+    // return [$users_rooms['body'], $secondUsers_rooms['body']];
+
+    // $chatkit->createRoom([
+    //   'creator_id' => $user->id,
+    //   'name' => $user->name . ' & ' . $secondUser->name,
+    //   'user_ids' => $secondUser->id,
+    //   'private' => true,
+    // ]);
+  }
+
+  public function getUsersRooms($id) {
+    return $this->chatkit->getUserRooms([ 'id' => $id ]);
+  }
 }
 

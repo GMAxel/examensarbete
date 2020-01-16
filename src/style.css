@@ -50,7 +50,7 @@ p {
     justify-items:stretch;
     align-items: stretch;
     grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: 1fr 10fr 1fr;
+    grid-template-rows: 1fr 10fr 60px;
     grid-template-areas: 
         "header header header header header header"
         "main main main main main main"
@@ -246,7 +246,18 @@ p {
 .messages {
     grid-area:mess;
     background-color: #d0d0d0;
+    display:flex;
+    flex-direction: column;
 }
+    .messages > .user {
+        align-self:flex-end;
+        background-color: darkblue;
+        color:white;
+    }
+    .messages > .otherUser {
+        align-self:flex-start;
+        background-color: grey;
+    }
 .newMessage {
     grid-area:newMess;
     background-color:#ededed;

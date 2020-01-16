@@ -18,6 +18,7 @@ const AuthContextProvider = (props) => {
      * firstname: JSON.parse(sessionStorage.getItem('userData')).firstName;?
      */
     useEffect(() => {
+        console.log('AUthcontext körs');
         // Om användaren inte är autentiserad, 
         // Det finns en session. 
         // Användaren har inte tryckt på att logga ut, 

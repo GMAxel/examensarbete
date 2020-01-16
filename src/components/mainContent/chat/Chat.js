@@ -15,14 +15,19 @@ const tokenProvider = new TokenProvider({
   const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
 const Chat = () => {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState(null);
+    const [secondUser, setSecondUser] = useState(null);
+    const [messages, setMessages] = useState(null);
+    const {userData} = useContext(AuthContext);
+
     useEffect(() => {
-        Axios.get(API_PATH + '/chat', {
+        console.log('useeffect körs')
+        Axios.get(API_PATH + '/chat' , {
             
         })
         .then((response) => {
-            // x = response.data;
             setUsers(response.data.body)
+            console.log(response)
         })
         .catch((error) => {
             console.log(error.response);
@@ -31,18 +36,39 @@ const Chat = () => {
         .finally(function () {
             // always executed
         });
-    })
+    }, []);
+    useEffect(() => {
+        if(secondUser !== null) {
+            Axios.post(API_PATH + '/chat' + '/' + secondUser.id, {
+                user: {
+                    id: userData.id,
+                    name: userData.firstName + ' ' + userData.lastName
+
+                },
+                secondUser : {
+                    id: secondUser.id,
+                    name: secondUser.name
+                }
+            })
+            .then((response) => {
+                console.log(response)
+                setMessages(response.data.body)
+            })
+            .catch((error) => {
+                console.log(error.response);
+                // Visa felet för användaren.
+            })
+            .finally(function () {
+                // always executed
+            });
+        }
+    }, [secondUser]);
         
     const handleClick = (user) => {
         console.log(user)
+        setSecondUser(user);
     }
-
-
-    const {userData} = useContext(AuthContext);
-    const userId = userData.id;
-    const name  = userData.firstName + ' ' + userData.lastName;
-    
-    const otherUserId="bob";
+    const activeChat = secondUser ? secondUser : '';
     return (
         <div className="mainContentStyle">
             
@@ -51,21 +77,40 @@ const Chat = () => {
                     <p>Meddelanden</p>
                 </div>
                 <div className='userList'>
-                    {users.map((user, index) => {
-                        return (
-                            <div className='userListItem' onClick={() => handleClick(user)}key={index}>
-                                <p className='fullName'>{user.name}</p>
-                                <p className='lastMessage'>Helt galen ka....</p>
-                                <p className="timeStamp">10:00</p>
-                            </div>
-                        )
+                    {users && users.map((user, index) => {
+                        if(user.id !== userData.id) {
+                            return (
+                                <div className='userListItem' onClick={() => handleClick(user)}key={index}>
+                                    <p className='fullName'>{user.name}</p>
+                                    <p className='lastMessage'>Helt galen ka....</p>
+                                    <p className="timeStamp">10:00</p>
+                                </div>
+                            )
+                        }
                     })}
                 </div>
                 <div className='messageHeader'>
-                    <p>Fredrik Reinfeldt</p>
+                    <p>{activeChat.name}</p>
                 </div>
                 <div className='messages'>
-                    <p>hello frank</p>
+                    {messages && messages.map((message, index) => {
+                        var author;
+                        if(message.user_id === userData.id) {
+                            author = 'user'
+                        } else {
+                            author = 'otherUser'
+                        }
+                        return (
+                            <div 
+                                class={author} 
+                                key={index}
+                            >
+
+                                <p>{message.parts[0].content}</p>
+                            </div>
+                        )
+                    }
+                    )}
                 </div>
                 <div className='newMessage'>
                     <input 

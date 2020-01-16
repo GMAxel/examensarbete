@@ -24,17 +24,17 @@ spl_autoload_register(function ($class_name) {
 
 $bodyData = json_decode(file_get_contents('php://input'));
 
-$actionRequest;
-if($request_method === 'post') {
-    $actionRequest = $bodyData->action;
-}
+
 
 
 // Get URI.
 $request_uri = $_SERVER['REQUEST_URI'];
-$request_uri = explode('queryHandler.php/', $_SERVER['REQUEST_URI'], 2);
-$request_uri = filter_var($request_uri[1], FILTER_SANITIZE_STRING);
-
+$request_uri = explode('/', $_SERVER['REQUEST_URI']);
+$specific_user = false; 
+if(isset($request_uri[7])) {
+    $specific_user = filter_var($request_uri[7], FILTER_SANITIZE_STRING);
+}
+$request_uri = filter_var($request_uri[6], FILTER_SANITIZE_STRING);
 $user = new User();
 
 switch($request_uri) {
@@ -75,60 +75,20 @@ switch($request_uri) {
 
     case 'chat':
         $chatKitHandler = new ChatKitHandler();
-        $users = $chatKitHandler->getUsers();
-        echo json_encode($users);
+        if(!$specific_user) {
+            $users = $chatKitHandler->getUsers();
+            echo json_encode($users);
+        } else {
+            $body_data = json_decode(file_get_contents('php://input'));
+            $user = $body_data->user;
+            $secondUser = $body_data->secondUser;
+            // echo $user . ' ' . $secondUser;
+            $startChat = $chatKitHandler->startChat($user, $secondUser);
+            echo json_encode($startChat);
+        }
     break;
 }
 die();
-
-$user = new User();
-
-switch($request_method) {
-    case 'post' :
-        switch($actionRequest) {
-            case 'logIn': 
-                $username  = $bodyData->data->username;
-                $pass      = $bodyData->data->password;
-                $loggedInUser = $user->logIn($username, $pass);
-                if($loggedInUser) { 
-                    $chatKitHandler = new ChatKitHandler();
-                    $userLoggedIn = $chatKitHandler->authUser($loggedInUser->id);
-                    $loggedInUser->accessToken = $userLoggedIn['body']['access_token'];
-                    $loggedInUser->expiresIn = $userLoggedIn['body']['expires_in'];
-                    http_response_code(200);
-                    echo json_encode($loggedInUser);
-                } else {
-                    http_response_code(400);
-                    echo json_encode($user->msg);
-                }
-        
-            break;
-            case 'newUser':
-                $firstName = $bodyData->data->firstName;
-                $lastName  = $bodyData->data->lastName;
-                $username  = $bodyData->data->username;
-                $pass      = $bodyData->data->password;
-                $result = $user->create($firstName, $lastName, $username, $pass);
-                if($result) {
-                    $chatKitHandler = new ChatKitHandler();
-                    $userCreated = $chatKitHandler->createUser($result, $firstName . ' ' . $lastName);
-                    // If(userWasNotCreated) { delete user from our database. }
-                    http_response_code(200);
-                    echo json_encode($userCreated);
-                } else {
-                    http_response_code(400);
-                    echo json_encode($user->msg);
-                }
-            break;
-        }
-        
-    break;
-
-    case 'get' :
-        
-    break;
-}
-die;
 // $table     = $bodyData->table;
 
 // $result = $user->getUsers();
