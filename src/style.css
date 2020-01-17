@@ -261,25 +261,27 @@ p {
 .newMessage {
     grid-area:newMess;
     background-color:#ededed;
-    display:flex;
-    padding:1rem;
-    box-sizing: border-box;
 }
-    .newMessage > input {
+    .newMessage > form {
+        display:flex;
+        padding:1rem;
         box-sizing: border-box;
-        border: none;
-        padding: 0.75rem;
-        border-radius: 0.5rem;
-        width: 100%;
-        flex-grow: 1;
     }
-    .newMessage > button {
-        border: 1px solid #c5c5c5;
-        background: none;
-        margin-left: 1rem;
-        padding: 0rem 1rem;
-        border-radius: 0.3rem;
-    }
+        .newMessage > form > input {
+            box-sizing: border-box;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            flex-grow: 1;
+        }
+        .newMessage > form > button {
+            border: 1px solid #c5c5c5;
+            background: none;
+            margin-left: 1rem;
+            padding: 0rem 1rem;
+            border-radius: 0.3rem;
+        }
     
 
 .listHeader {

@@ -1,15 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
-import {ChatkitProvider, TokenProvider} from '@pusher/chatkit-client-react'
-import { AuthContext } from '../../contexts/AuthContext'
+import React, { useEffect, useState } from 'react'
 import Axios from 'axios';
 
-
-import { tokenUrl, instanceLocator } from './chat/config'
-const tokenProvider = new TokenProvider({
-    url: tokenUrl,
-  });
-
-  const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
+const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
 const FindUsers = () => {
     const [users, setUsers] = useState([]);
@@ -35,11 +27,6 @@ const FindUsers = () => {
     }
 
 
-    const {userData} = useContext(AuthContext);
-    const userId = userData.id;
-    const name  = userData.firstName + ' ' + userData.lastName;
-    
-    const otherUserId="bob";
     return (
         <div className="mainContentStyle">
                 <div className='userList'>
