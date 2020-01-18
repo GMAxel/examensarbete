@@ -7,6 +7,7 @@ function MessageList({messages, userData}) {
             <div className='messages'></div>
         );
     } 
+    console.log(messages, userData)
     return (
         <div className='messages'>
             {messages && messages.map((message, index) => {

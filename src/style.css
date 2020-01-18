@@ -1,5 +1,7 @@
 :root {
-    --main-color: #d2dde4;
+    --main-color: #fefefe;
+    /* --main-color: #d2dde4; */
+
     --secondary-color: white;
     --main-text-color: #000000;
     --secondary-text-color: rgb(238, 228, 228);
@@ -50,7 +52,7 @@ p {
     justify-items:stretch;
     align-items: stretch;
     grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: 1fr 10fr 60px;
+    grid-template-rows: 90px 1fr 60px;
     grid-template-areas: 
         "header header header header header header"
         "main main main main main main"
@@ -165,6 +167,18 @@ p {
     width:100%;
     box-sizing: border-box;
 }
+.createAccount > ul > li > .createDescription {
+    border-radius:10px;
+    padding: 5px;
+    border: solid 0.1em rgb(113, 138, 85);
+    font-weight: bold;
+    box-shadow: 0 0 15px -3px whitesmoke;
+    outline: inherit;
+    margin-bottom:8px;
+    width:100%;
+    height:123px;
+    box-sizing: border-box;
+}
 .createAccount > ul > li > button {
     border-radius:10px;
     padding: 5px;
@@ -201,12 +215,15 @@ p {
 .chat {
     display:grid;
     height:100%;
-    grid-template-columns: repeat(8, 1fr);
+    position:relative;
+    box-sizing: border-box;
+    margin:auto;
+    grid-template-columns: repeat(6, 1fr);
     grid-template-rows: 1fr 10fr 1fr;
     grid-template-areas: 
-        ". listH listH messH messH messH messH ."
-        ". list list mess mess mess mess ."
-        ". list list newMess newMess newMess newMess .";
+        "listH listH messH messH messH messH"
+        "list list mess mess mess mess"
+        "list list newMess newMess newMess newMess";
 }
 .userList {
     grid-area:list;
@@ -214,12 +231,15 @@ p {
     display:flex;
     flex-direction: column;
     border-right: 1px solid #e0e0e0;
+
     box-sizing: border-box;
+    
 }
     .userList > .userListItem {
         box-sizing: border-box;
-        border-bottom:4px solid black;
+        border-bottom:1px solid #e0e0e0;
         cursor: pointer;
+        padding:1em;
         display:grid;
         grid-template-columns: 1fr 2fr 8fr 2fr;
         grid-template-rows: 1fr 1fr 1fr;
@@ -227,7 +247,6 @@ p {
         ". name name time"
         ". lastMsg lastMsg time"
         ". lastMsg lastMsg .";
-        height:60px;
         overflow: hidden;
     }
         .userList > .userListItem > .fullName {
@@ -245,7 +264,7 @@ p {
 
 .messages {
     grid-area:mess;
-    background-color: #d0d0d0;
+    background-color: #fefefe;
     display:flex;
     flex-direction: column;
 }
@@ -308,7 +327,81 @@ p {
         top:50%;
         margin-left:5%;
     }
+/* 
+                            FindUsers
+*/
+.findUsers {
+    grid-area:list;
+    background-color: #fefefe;
+    display:flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding:1em;
+    width:50%;
+    margin:auto;
+}
 
+    .findUsers > .findUserItem {
+        margin-top:1em;
+        padding:1em;
+        box-sizing: border-box;
+        /* border-top:4px solid black;
+        border-right:4px solid black;
+        border-left:4px solid black; */
+        border:2px solid black;
+        border-radius:10px;
+
+        cursor: pointer;
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        grid-template-areas: 
+        ". n n  ."
+        "d d d d "
+        "d d d d "
+        ". btn btn . ";
+        overflow: hidden;
+    }
+    
+        .findUsers > .findUserItem > .fullName {
+            grid-area:n;
+            font-weight: 700;
+            font-size:1.2em;
+            text-align:center;
+        }
+        .findUsers > .findUserItem > .description {
+            grid-area:d;
+            font-weight: 500;
+            font-size:1.2em;
+            /* border:1px solid black; */
+            border: solid 0.1em rgb(204, 211, 197);
+            border-radius:10px;
+            padding:10px;
+            box-sizing:border-box;
+        }
+            .findUsers > .findUserItem > .description > .descTitle{
+                grid-area:dt;
+                font-weight: 500;
+                font-size:1.2em;
+                text-align:center;
+                position:relative;
+                bottom:1.5em;
+            }
+        .findUsers > .findUserItem > .chatBtn {
+            grid-area:btn;
+            border-radius:10px;
+            padding: 5px;
+            border: solid 0.1em rgb(204, 211, 197);
+            font-weight: bold;
+            box-shadow: 0 0 15px -3px whitesmoke;
+            outline: inherit;
+            height:44px;
+            cursor: pointer;
+            width:100%;
+            background-color:rgb(67, 82, 223);
+            color:rgb(236, 231, 231);
+            margin-top:5px;
+        }
 /* _____________________________________________________________________________ */
 
 /* 

@@ -56,6 +56,7 @@ class ChatKitHandler {
     }
     
     if($inSameRoom) {
+      
       // if they are in the same room, join room.
       // $messages = $this->chatkit->fetchMultipartMessages([
       //   'room_id' => $inSameRoom

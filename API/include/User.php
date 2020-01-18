@@ -12,17 +12,18 @@ class User {
         $obj = new DB();
         $this->db = $obj->pdo;
     }
-    public function create($firstName, $lastName, $username, $password) {
+    public function create($firstName, $lastName, $username, $description, $password) {
         $sql = "INSERT INTO $this->table 
-        (firstName, lastName, username, password)
-        VALUES(:firstName, :lastName, :username, :pass)";
+        (firstName, lastName, username, description, password)
+        VALUES(:firstName, :lastName, :username, :description, :pass)";
         $stmt = $this->db->prepare($sql);
 
         // Filtering. 
         $filt_firstName = filter_var($firstName, FILTER_SANITIZE_STRING);
-        $filt_lastName = filter_var($lastName, FILTER_SANITIZE_STRING);
-        $filt_username = filter_var($username, FILTER_SANITIZE_STRING);
-        $filt_password = filter_var($password, FILTER_SANITIZE_STRING);
+        $filt_lastName  = filter_var($lastName, FILTER_SANITIZE_STRING);
+        $filt_username  = filter_var($username, FILTER_SANITIZE_STRING);
+        $filt_password  = filter_var($password, FILTER_SANITIZE_STRING);
+        $filt_desc      = filter_var($description, FILTER_SANITIZE_STRING);
         // Check if username has more than 3 characters
         if(strlen($filt_username) <= 3) {
             $this->msg = 'Username too short - minimum 4 characters'; 
@@ -37,12 +38,17 @@ class User {
             $this->msg = 'Username already in use' ;
             return false;
         }
+        if(strlen($filt_desc) <= 350) {
+            $this->msg = 'Description too long! Max characters 350, you typed in ' . strlen($filt_desc) . ' characters.';
+            return false;
+        }
         // Hash password.
         $hash = password_hash($filt_password, PASSWORD_DEFAULT);
         // Bind Values
         $stmt->bindValue(':firstName',  $filt_firstName);
         $stmt->bindValue(':lastName',   $filt_lastName);
         $stmt->bindValue(':username',   $filt_username);
+        $stmt->bindValue(':description',   $filt_desc);
         $stmt->bindValue(':pass',       $hash);
         $result = $stmt->execute();
         if($result) {
@@ -67,7 +73,8 @@ class User {
                 'id' => $userData[0]->id,
                 'firstName' => $userData[0]->firstName,
                 'lastName' => $userData[0]->lastName,
-                'username' => $userData[0]->username
+                'username' => $userData[0]->username,
+                'description' => $userData[0]->description
             ];
             return $obj;
         } else {
@@ -76,7 +83,7 @@ class User {
     }
 
     public function getUsers() {
-        $sql = "SELECT * FROM $this->table";
+        $sql = "SELECT id, firstName, lastName, userName, description FROM $this->table";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_OBJ);

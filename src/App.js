@@ -9,8 +9,8 @@ import MyAccount from './components/mainContent/MyAccount'
 import AuthContextProvider  from './contexts/AuthContext';
 import PrivateRoute from './PrivateRoute';
 import LoggedInRoute from './LoggedInRoute';
-import FindUsers from './components/mainContent/FindUsers';
 
+import FindUsers from './components/mainContent/FindUsers2';
 import Chat from './components/mainContent/chat3/Chat.js';
 
 

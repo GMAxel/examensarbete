@@ -10,7 +10,8 @@ const SignUp = () => {
                 firstName : '',
                 lastName: '',
                 username: '',
-                password: ''
+                password: '',
+                description: ''
             }
     )
     const [errorMessage, setErrorMessage] = useState(null)
@@ -30,7 +31,8 @@ const SignUp = () => {
                 firstName:  userInput.firstName,
                 lastName:   userInput.lastName,
                 username:   userInput.username,
-                password:   userInput.password
+                password:   userInput.password,
+                description: userInput.description
             }
         })
         .then((response) => {
@@ -42,7 +44,8 @@ const SignUp = () => {
                 firstName: '',
                 lastName: '',
                 username: '',
-                password: ''
+                password: '',
+                description: ''
             })
 
         })
@@ -89,6 +92,18 @@ const SignUp = () => {
                             type="text"
                             name="username"
                             value={userInput.username}
+                            required
+                        />
+                    </li>
+                    <li>
+                        <label>Description</label>
+                        <textarea 
+                            onChange={handleChange}
+                            type="text"
+                            name="description"
+                            value={userInput.description}
+                            className="createDescription"
+                            maxlength="350"
                             required
                         />
                     </li>

@@ -60,7 +60,8 @@ switch($request_uri) {
         $lastName  = $bodyData->data->lastName;
         $username  = $bodyData->data->username;
         $pass      = $bodyData->data->password;
-        $result = $user->create($firstName, $lastName, $username, $pass);
+        $desc      = $bodyData->data->description;
+        $result = $user->create($firstName, $lastName, $username, $desc, $pass);
         if($result) {
             $chatKitHandler = new ChatKitHandler();
             $userCreated = $chatKitHandler->createUser($result, $firstName . ' ' . $lastName);
@@ -83,6 +84,24 @@ switch($request_uri) {
             $user = $body_data->user;
             $secondUser = $body_data->secondUser;
             // echo $user . ' ' . $secondUser;
+            $startChat = $chatKitHandler->startChat($user, $secondUser);
+            echo json_encode($startChat);
+        }
+    break;
+
+    case 'find-users': 
+        $chatKitHandler = new ChatKitHandler();
+        if(!$specific_user) {
+            $users = $user->getUsers();
+            echo json_encode($users);
+        } else {
+            $chatKitHandler = new ChatKitHandler();
+            $body_data = json_decode(file_get_contents('php://input'));
+            $user = $body_data->user;
+            $secondUser = $body_data->secondUser;
+            // echo json_encode($user);
+            // echo json_encode($secondUser);
+            // die;
             $startChat = $chatKitHandler->startChat($user, $secondUser);
             echo json_encode($startChat);
         }

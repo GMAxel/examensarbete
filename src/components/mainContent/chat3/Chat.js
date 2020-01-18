@@ -17,52 +17,64 @@ const Chat = (props) => {
     const {userData} = useContext(AuthContext);
 
     useEffect(() => {
-        const newRoom = props.location.search ? props.location.search.substr(1)
-        : null;
+        const newRoom = props.location.search ? props.location.search.substr(1) :
+            null;
         console.log(newRoom);
-        if(userData.isAuthenticated)  {
+        if (userData.isAuthenticated) {
             const chatManager = new ChatManager({
                 instanceLocator: instanceLocator,
                 userId: userData.id,
-                tokenProvider: new TokenProvider({ url: tokenUrl })
+                tokenProvider: new TokenProvider({
+                    url: tokenUrl
+                })
             })
             chatManager.connect()
-            .then(currentUser => { 
-                setUser(currentUser);
-                setRooms(currentUser.rooms);
-                console.log(currentUser.rooms);
-                if(newRoom !== null) {
-                    setRoomId(newRoom);
-                }
+                .then(currentUser => {
+                    setUser(currentUser);
+                    setRooms(currentUser.rooms);
+                    console.log(currentUser.rooms);
+                    if (newRoom !== null) {
+                        setRoomId(newRoom);
+                    }
 
-            })
-            .catch(err => {
-                console.log('Error on connection', err)
-            })
+                })
+                .catch(err => {
+                    console.log('Error on connection', err)
+                })
         }
+        return ( () => {
+            user && user.disconnect();
+        })
     }, [userData])
 
     useEffect(() => {
-        if(roomId !== null) {
+        console.log('Nu körs jag(useEffect)')
+
+        if (roomId !== null) {
             console.log(roomId)
             setMessages([]);
             user.subscribeToRoom({
-                roomId: roomId,
-                messageLimit: 20, // default === 20
-                hooks: {
-                    onMessage: (message) => {
-                        setMessages(prevMessages => {
-                            return prevMessages.concat(message)
-                        })
+                    roomId: roomId,
+                    messageLimit: 20, // default === 20
+                    hooks: {
+                        onMessage: (message) => {
+                            if(message.roomId !== roomId) {
+                                console.log(roomId);
+                            }
+                            setMessages(prevMessages => {
+                                return prevMessages.concat(message)
+                            })
+                        }
                     }
-                }
-            })
-            .then(room => {
-                console.log(room);
-                setRoomId(room.id)
-            })
-            .catch(err => console.log('error on subscribing to room: ', err))
+                })
+                .then(room => {
+                    setRoomId(room.id)
+                })
+                .catch(err => console.log('error on subscribing to room: ', err))
         }
+        return ( () => {
+            user && user.roomSubscriptions[roomId].cancel()
+        })
     }, [roomId])
 
     const handleClick = (roomId) => {
@@ -77,11 +89,11 @@ const Chat = (props) => {
     }
     const createRoom = (id) => {
         user.createRoom({
-            private: true,
-            addUserIds: [id]
-        })
-        .then(room => user.subscribeToRoom(room.id))
-        .catch(err => console.log('error with createRoom: ', err))
+                private: true,
+                addUserIds: [id]
+            })
+            .then(room => user.subscribeToRoom(room.id))
+            .catch(err => console.log('error with createRoom: ', err))
     }
 
     return (
