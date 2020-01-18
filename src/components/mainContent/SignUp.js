@@ -14,6 +14,7 @@ const SignUp = () => {
             }
     )
     const [errorMessage, setErrorMessage] = useState(null)
+    const [success, setSucess] = useState(false);
 
     const handleChange = (e) => {
         const name = e.target.name;
@@ -36,6 +37,14 @@ const SignUp = () => {
             console.log(response)
             // Rerouta användaren vid sucess.
             setErrorMessage(null)
+            setSucess(true)
+            setUserInput({
+                firstName: '',
+                lastName: '',
+                username: '',
+                password: ''
+            })
+
         })
         .catch((error) => {
             console.log('Error!: ', error.response);
@@ -99,7 +108,7 @@ const SignUp = () => {
                         </button>
                     </li>     
                     <li>
-                        <p>{errorMessage}</p>
+                        <p>{success?'Konto Skapat - Logga in!':errorMessage}</p>
                     </li>            
                 </ul>
             </form>

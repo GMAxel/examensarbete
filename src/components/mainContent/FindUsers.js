@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Axios from 'axios';
-import { Link } from "react-router-dom";
+import { AuthContext } from '../../contexts/AuthContext';
 
 const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
-const FindUsers = () => {
+const FindUsers = (props) => {
     const [users, setUsers] = useState([]);
+    const [secondUser, setSecondUser] = useState(null);
+    const {userData} = useContext(AuthContext);
+
     useEffect(() => {
-        Axios.get(API_PATH + '/chat', {
-            
-        })
+        Axios.get(API_PATH + '/chat', {})
         .then((response) => {
             // x = response.data;
             setUsers(response.data.body)
@@ -21,10 +22,43 @@ const FindUsers = () => {
         .finally(function () {
             // always executed
         });
-    })
+        return() => {
+            setUsers([])
+        }
+    }, [])
+    useEffect(() => {
+        if(secondUser !== null && userData.isAuthenticated) {
+            const abortController = new AbortController();
+
+            Axios.post(API_PATH + '/chat' + '/' + secondUser.id, {
+                user: {
+                    id: userData.id,
+                    name: userData.firstName + ' ' + userData.lastName
+
+                },
+                secondUser : {
+                    id: secondUser.id,
+                    name: secondUser.name
+                }
+            })
+            .then((response) => {
+                console.log(response)
+                console.log(props);
+                props.history.push('/chat?' + response.data);
+            })
+            .catch((error) => {
+                console.log(error.response);
+                // Visa felet för användaren.
+            })
+            return() => {
+                abortController.abort();
+            }
+        }
+    }, [secondUser]);
         
-    const handleClick = (user) => {
-        console.log(user)
+    const handleClick = (secondUser) => {
+        console.log(secondUser)
+        setSecondUser(secondUser)
     }
 
 
@@ -34,11 +68,13 @@ const FindUsers = () => {
                 <div className='userList'>
                     {users.map((user, index) => {
                         return (
-                            <Link className='userListItem' to={"/chat?" + user.id}>
+                            // <Link className='userListItem' to={"/chat?" + user.id}>
+                            <div className='userListItem' key={index} onClick={() => handleClick(user)}>
                                     <p className='fullName'>{user.name}</p>
                                     <p className='lastMessage'>Helt galen ka....</p>
                                     <p className="timeStamp">10:00</p>
-                            </Link>
+                            </div>
+                            // /* </Link> */
                         )
                     })}
                 </div>

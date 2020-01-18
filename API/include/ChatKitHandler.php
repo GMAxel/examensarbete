@@ -57,10 +57,10 @@ class ChatKitHandler {
     
     if($inSameRoom) {
       // if they are in the same room, join room.
-      $messages = $this->chatkit->fetchMultipartMessages([
-        'room_id' => $inSameRoom
-      ]);
-      return $messages;
+      // $messages = $this->chatkit->fetchMultipartMessages([
+      //   'room_id' => $inSameRoom
+      // ]);
+      return $inSameRoom;
     } else {
       // if they are not in the same room, create room.
       $result = $this->chatkit->createRoom([
@@ -69,10 +69,10 @@ class ChatKitHandler {
         'user_ids' => [$secondUser->id],
         'private' => true,
       ]);
-      return $result;
-
-      
+      return $result['body']['id'];
     }
+
+    
     // return [$users_rooms['body'], $secondUsers_rooms['body']];
 
     // $chatkit->createRoom([

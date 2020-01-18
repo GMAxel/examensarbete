@@ -6,11 +6,13 @@ import Footer from './components/footer/Footer'
 import SignUp from './components/mainContent/SignUp'
 import LogIn from './components/mainContent/LogIn';
 import MyAccount from './components/mainContent/MyAccount'
-import Chat from './components/mainContent/chat2/Chat.js';
 import AuthContextProvider  from './contexts/AuthContext';
 import PrivateRoute from './PrivateRoute';
 import LoggedInRoute from './LoggedInRoute';
 import FindUsers from './components/mainContent/FindUsers';
+
+import Chat from './components/mainContent/chat3/Chat.js';
+
 
 function App() {
   return (

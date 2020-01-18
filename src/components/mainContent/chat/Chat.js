@@ -17,7 +17,6 @@ const Chat = () => {
     const [messages, setMessages] = useState(null);
     const {userData} = useContext(AuthContext);
 
-
     useEffect(() => {
         console.log('useeffect körs')
         Axios.get(API_PATH + '/chat' , {

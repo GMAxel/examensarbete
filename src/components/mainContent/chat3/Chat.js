@@ -14,19 +14,13 @@ const Chat = (props) => {
     const [messages, setMessages] = useState([]);
     const [rooms, setRooms] = useState([]);
     const [user, setUser] = useState();
-    const [secondUser, setSecondUser] = useState(null);
-    // console.log(props)
-
     const {userData} = useContext(AuthContext);
-      
 
     useEffect(() => {
         const newRoom = props.location.search ? props.location.search.substr(1)
         : null;
         console.log(newRoom);
         if(userData.isAuthenticated)  {
-            
-        
             const chatManager = new ChatManager({
                 instanceLocator: instanceLocator,
                 userId: userData.id,
@@ -37,6 +31,9 @@ const Chat = (props) => {
                 setUser(currentUser);
                 setRooms(currentUser.rooms);
                 console.log(currentUser.rooms);
+                if(newRoom !== null) {
+                    setRoomId(newRoom);
+                }
 
             })
             .catch(err => {
@@ -45,53 +42,32 @@ const Chat = (props) => {
         }
     }, [userData])
 
-    const subscribeToRoom = (roomId) => {
-        setMessages([]);
-        console.log('subscribe to room körs')
-        user.subscribeToRoom({
-            roomId: roomId,
-            messageLimit: 20, // default === 20
-            hooks: {
-                onMessage: (message) => {
-                    setMessages(prevMessages => {
-                        console.log(prevMessages);
-                        return prevMessages.concat(message)
-                    })
+    useEffect(() => {
+        if(roomId !== null) {
+            console.log(roomId)
+            setMessages([]);
+            user.subscribeToRoom({
+                roomId: roomId,
+                messageLimit: 20, // default === 20
+                hooks: {
+                    onMessage: (message) => {
+                        setMessages(prevMessages => {
+                            return prevMessages.concat(message)
+                        })
+                    }
                 }
-            }
-        })
-        .then(room => {
-            console.log(room);
-            setRoomId(room.id)
-        })
-        .catch(err => console.log('error on subscribing to room: ', err))
+            })
+            .then(room => {
+                console.log(room);
+                setRoomId(room.id)
+            })
+            .catch(err => console.log('error on subscribing to room: ', err))
+        }
+    }, [roomId])
+
+    const handleClick = (roomId) => {
+        setRoomId(roomId)
     }
-    // useEffect(() => {
-    //     if(secondUser !== null) {
-    //         user.subscribeToRoom({
-    //             roomId: roomId,
-    //             messageLimit: 20, // default === 20
-    //             hooks: {
-    //                 onMessage: (message) => {
-    //                     setMessages(prevMessages => {
-    //                         console.log(prevMessages);
-    //                         return prevMessages.concat(message)
-    //                     })
-    //                 }
-    //             }
-    //         })
-    //         .then(room => {
-    //             console.log(room);
-    //             setRoomId(room.id)
-    //         })
-    //         .catch(err => console.log('error on subscribing to room: ', err))
-
-    //     }
-    // }, [secondUser])
-
-    // const handleClick = (secondUser) => {
-    //     setSecondUser(secondUser);
-    // }
 
     const sendMessage = (text) => {
         user.sendMessage({
@@ -112,7 +88,7 @@ const Chat = (props) => {
         <div className="mainContentStyle">
             <div className='chat'>
                 <ListHeader />
-                <UserList users={rooms} userData={userData} handleClick={subscribeToRoom}/>
+                <UserList users={rooms} userData={userData} handleClick={handleClick}/>
                 <MessageHeader name={roomId}/>
                 <MessageList messages={messages} userData={userData} />
                 <NewMessage 
