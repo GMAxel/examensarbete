@@ -10,18 +10,22 @@ import { AuthContext } from './contexts/AuthContext'
 const PrivateRoute = ({ component: Component, ...rest }) => {
     const {userData} = useContext(AuthContext);
     const isLoggedIn = userData.isAuthenticated;
+    const isLoading = userData.isLoading;
   // Add your own authentication on the below line.
 //   const isLoggedIn = AuthService.isLoggedIn()
-
+    
   return (
     <Route
       {...rest}
       render={props =>
-        isLoggedIn ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-        )
+        !isLoading ? 
+          isLoggedIn ? (
+            <Component {...props} />
+          ) : (
+            <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+          )
+          :
+          null
       }
     />
   )

@@ -8,7 +8,8 @@ import MessageHeader from './MessageHeader';
 import NewMessage from './NewMessage';
 import ListHeader from './ListHeader';
 
-  const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
+const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
+
 
 const Chat = () => {
     const [users, setUsers] = useState(null);

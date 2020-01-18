@@ -9,6 +9,9 @@ De kan läggas till som hooks på subscribeToRoom så här:
     }
 
 
+Autofokusera inputfältet:
+https://www.youtube.com/watch?v=FXa9mMTKOu8
+
 
 
 

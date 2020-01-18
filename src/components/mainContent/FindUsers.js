@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Axios from 'axios';
+import { Link } from "react-router-dom";
 
 const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
@@ -29,14 +30,15 @@ const FindUsers = () => {
 
     return (
         <div className="mainContentStyle">
+            <h4>Click on user to start chatting with them!</h4>
                 <div className='userList'>
                     {users.map((user, index) => {
                         return (
-                            <div className='userListItem' onClick={() => handleClick(user)}key={index}>
-                                <p className='fullName'>{user.name}</p>
-                                <p className='lastMessage'>Helt galen ka....</p>
-                                <p className="timeStamp">10:00</p>
-                            </div>
+                            <Link className='userListItem' to={"/chat?" + user.id}>
+                                    <p className='fullName'>{user.name}</p>
+                                    <p className='lastMessage'>Helt galen ka....</p>
+                                    <p className="timeStamp">10:00</p>
+                            </Link>
                         )
                     })}
                 </div>

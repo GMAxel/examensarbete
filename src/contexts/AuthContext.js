@@ -11,7 +11,8 @@ const AuthContextProvider = (props) => {
         isAuthenticated: false,
         logOut: false,
         accessToken: '',
-        expiresIn: null        
+        expiresIn: null,
+        isLoading: true        
     })
     /**
      * Sätta default värde med
@@ -50,6 +51,7 @@ const AuthContextProvider = (props) => {
             isAuthenticated: true,
             accessToken,
             expiresIn,
+            isLoading:false
         })
     }
     const onLogOut = () => {

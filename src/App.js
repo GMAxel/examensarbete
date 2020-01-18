@@ -6,7 +6,7 @@ import Footer from './components/footer/Footer'
 import SignUp from './components/mainContent/SignUp'
 import LogIn from './components/mainContent/LogIn';
 import MyAccount from './components/mainContent/MyAccount'
-import Chat from './components/mainContent/chat/Chat.js';
+import Chat from './components/mainContent/chat2/Chat.js';
 import AuthContextProvider  from './contexts/AuthContext';
 import PrivateRoute from './PrivateRoute';
 import LoggedInRoute from './LoggedInRoute';
@@ -24,7 +24,8 @@ function App() {
               <LoggedInRoute path="/login" component={LogIn} />
               <LoggedInRoute path="/signup" component={SignUp} />
               <PrivateRoute path="/my-account" component={MyAccount} />
-              <PrivateRoute path="/chat/" component={Chat} />
+              <PrivateRoute path="/chat" component={Chat} />
+              {/* <Route exact path="/chat" component={Chat} /> */}
             </Switch>
             <Footer />
         </AuthContextProvider>
