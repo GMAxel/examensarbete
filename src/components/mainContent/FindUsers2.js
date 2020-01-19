@@ -70,7 +70,6 @@ const FindUsers = (props) => {
                                         <p className='fullName'>{user.firstName + ' ' + user.lastName}</p>
                                         {<p className="description">{user.description ? user.description: 'About me...'}</p>}
                                         <button className='chatBtn' onClick={() => handleClick(user)}>
-
                                             Chatta med mig!
                                             </button>
                                 </div>

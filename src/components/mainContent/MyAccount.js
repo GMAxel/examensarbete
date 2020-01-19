@@ -115,7 +115,7 @@ const MyAccount = () => {
     }
     return ( 
         <div className={'mainContentStyle'}>
-            <div className={'myAccount'}>
+            <div className={'createAccount'}>
                 <p className="title">My Account</p>
                 <ul>
                 {userInput && Object.keys(userInput).map((name, index) => {
