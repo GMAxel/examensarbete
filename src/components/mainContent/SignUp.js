@@ -15,7 +15,7 @@ const SignUp = () => {
             }
     )
     const [errorMessage, setErrorMessage] = useState(null)
-    const [success, setSucess] = useState(false);
+    const [success, setSuccess] = useState(false);
 
     const handleChange = (e) => {
         const name = e.target.name;
@@ -26,7 +26,6 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         Axios.post(API_PATH + '/signup', {
-            action: 'newUser',
             data: {
                 firstName:  userInput.firstName,
                 lastName:   userInput.lastName,
@@ -39,7 +38,7 @@ const SignUp = () => {
             console.log(response)
             // Rerouta användaren vid sucess.
             setErrorMessage(null)
-            setSucess(true)
+            setSuccess(true)
             setUserInput({
                 firstName: '',
                 lastName: '',
@@ -103,7 +102,7 @@ const SignUp = () => {
                             name="description"
                             value={userInput.description}
                             className="createDescription"
-                            maxlength="350"
+                            maxLength="350"
                             required
                         />
                     </li>

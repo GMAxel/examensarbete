@@ -84,6 +84,14 @@ class ChatKitHandler {
     // ]);
   }
 
+  public function updateUser($id, $name) {
+    $result = $this->chatkit->updateUser([
+      'id' => $id,
+      'name' => $name
+    ]);
+    return $result;
+  }
+
   public function getUsersRooms($id) {
     return $this->chatkit->getUserRooms([ 'id' => $id ]);
   }

@@ -106,6 +106,28 @@ switch($request_uri) {
             echo json_encode($startChat);
         }
     break;
+    case 'update-account':
+        $body_data = json_decode(file_get_contents('php://input'));
+        $result = $user->updateAccount($body_data);
+
+        if(!$result) {
+            echo json_encode($user->msg);
+            http_response_code(400);
+        } else {
+            $chatKitHandler = new ChatKitHandler();
+            $userLoggedIn = $chatKitHandler->authUser($result->id);
+            $result->accessToken = $userLoggedIn['body']['access_token'];
+            $result->expiresIn = $userLoggedIn['body']['expires_in'];
+            http_response_code(200);
+            echo json_encode($result);
+        }
+
+        if(isset($body_data->firstName) || isset($body_data->lastName)) {
+            // byt även på chatKit. 
+            $chatKitHandler = new ChatKitHandler();
+        }
+
+    break;
 }
 die();
 // $table     = $bodyData->table;

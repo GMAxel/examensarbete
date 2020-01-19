@@ -38,7 +38,7 @@ class User {
             $this->msg = 'Username already in use' ;
             return false;
         }
-        if(strlen($filt_desc) <= 350) {
+        if(strlen($filt_desc) >= 350) {
             $this->msg = 'Description too long! Max characters 350, you typed in ' . strlen($filt_desc) . ' characters.';
             return false;
         }
@@ -57,6 +57,78 @@ class User {
             return false;
         }
     }
+
+    public function updateAccount($inputs) {
+        $fields = $this->db->query("SHOW COLUMNS FROM $this->table;")->fetchAll();
+        $filtered_fields = [];
+        foreach($fields as $field) {
+            if($field['Field'] !== 'id') {
+                $filtered_fields[]= $field['Field'];
+            }
+        }
+        $common_fields = [];
+        $common_fields_for_sql = [];
+        foreach($filtered_fields as $field) {
+            if(isset($inputs->$field)) {
+               $common_fields_for_sql[] = $field . ' = :' . $field; 
+               $common_fields[] = $field;
+            }
+        }
+        // Setup query.
+        $sql = "UPDATE $this->table SET " . implode(', ', $common_fields_for_sql) . " WHERE id = :id";
+        $statement = $this->db->prepare($sql);
+
+
+        if(isset($inputs->username)) {
+            $checkUsername = filter_var($inputs->username, FILTER_SANITIZE_STRING);
+            if($this->getUser($checkUsername)) {
+                $this->msg = 'Username already in use' ;
+                return false;
+            }
+            if(strlen($checkUsername) <= 3) {
+                $this->msg = 'Username too short - minimum 4 characters'; 
+                return false;
+            }
+        }
+        if(isset($inputs->description)) {
+            if(strlen(filter_var($inputs->description)) >= 350) {
+                $this->msg = 'Description too long! Max characters 350, you typed in ' . strlen($inputs->description) . ' characters.';
+                return false;
+            }
+        }
+        foreach($common_fields as $field) {
+            $value = filter_var($inputs->$field, FILTER_SANITIZE_STRING);
+            if($field === 'password') {
+                if(strlen($value) <= 5) {
+                    $this->msg = 'Password too short - minimum 6 characters';
+                    return false;
+                }
+                $value = password_hash($value, PASSWORD_DEFAULT);
+            }
+            $statement->bindValue($field, $value, PDO::PARAM_STR);
+        }
+        $filt_id = filter_var($inputs->id, FILTER_SANITIZE_NUMBER_INT);
+        $statement->bindValue(':id', $filt_id);
+        $result = $statement->execute();
+
+        if($result === true) {
+            $sql = "SELECT * FROM $this->table WHERE id = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':id',   $filt_id);
+            $stmt->execute();
+            $updatedUser = $stmt->fetch(PDO::FETCH_OBJ);
+            $obj = (object) [
+                'id' => $filt_id,
+                'firstName' => $updatedUser->firstName,
+                'lastName' => $updatedUser->lastName,
+                'username' => $updatedUser->username,
+                'description' => $updatedUser->description
+            ];
+            return $obj;
+        }
+        return false;
+    }
+
     public function logIn($username, $pass) {
         $filt_username = filter_var($username, FILTER_SANITIZE_STRING);
         $filt_password = filter_var($pass, FILTER_SANITIZE_STRING);
