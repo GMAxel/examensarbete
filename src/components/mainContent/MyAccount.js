@@ -9,7 +9,7 @@ const reducer = (currentState, action) => {
     // return {...currentState, }
 }
 const MyAccount = () => {
-    const {userData, onLogIn} = useContext(AuthContext);
+    const {userData, onLogIn, onLogOut} = useContext(AuthContext);
     const [userInput, dispatch] = useReducer(
         (currentState, newValue) => ({...currentState, ...newValue}), 
         {
@@ -53,7 +53,7 @@ const MyAccount = () => {
         } else {
             newValues.id = userData.id;
         }
-        Axios.post(API_PATH + '/update-account', {
+        Axios.put(API_PATH + '/update-account', {
             ...newValues
         })
         .then((response) => {
@@ -62,14 +62,6 @@ const MyAccount = () => {
             setErrorMessage(null)
             setSuccess(true)
             onLogIn(response.data);
-            // dispatch({
-            //     firstName: '',
-            //     lastName: '',
-            //     username: '',
-            //     password: '',
-            //     description: ''
-            // })
-
         })
         .catch((error) => {
             console.log('Error!: ', error.response);
@@ -81,11 +73,29 @@ const MyAccount = () => {
         });
     }
     const handleDelete = () => {
-        if(window.confirm('Are you sure?')){
-            console.log('yes')
-        } else {
-            console.log('nej')
-        };
+        // if(window.confirm('Are you sure?')){
+            Axios.delete(API_PATH + '/delete-account', {
+                data: {
+                    id: userData.id
+                }
+            })
+            .then((response) => {
+                console.log('Svar delete:' ,response.data)
+                console.log('userdata:' ,userData.id)
+                onLogOut();
+                // Rerouta användaren vid sucess.
+            })
+            .catch((error) => {
+                console.log('Error!: ', error.response);
+                setErrorMessage(error.response.data)
+                setSuccess(false);
+            })
+            .finally(function () {
+                // always executed
+            });
+        // } else {
+        //     console.log('nej')
+        // };
     }
 
     const nameChanger = (name) => {

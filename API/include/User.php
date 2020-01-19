@@ -135,6 +135,7 @@ class User {
         $userData = $this->getUser($filt_username);
         // check if user exists
         if($userData === []) {
+            $this->msg = "Username or password doesn't exist";
             return false;
         } 
         $hash = $userData[0]->password;
@@ -150,6 +151,7 @@ class User {
             ];
             return $obj;
         } else {
+            $this->msg = "Username or password doesn't exist";
             return false;
         }
     }
@@ -170,6 +172,15 @@ class User {
         $result = $stmt->fetchAll(PDO::FETCH_OBJ);
         return $result;
     }
+
+    public function deleteUser($id) {
+        $sql = "DELETE FROM $this->table WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $filt_id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        $stmt->bindValue(':id', $filt_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }   
 }
 
 /**

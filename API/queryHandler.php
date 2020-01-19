@@ -128,6 +128,20 @@ switch($request_uri) {
         }
 
     break;
+    case 'delete-account':
+        $body_data = json_decode(file_get_contents('php://input'));
+        $id = $body_data->id;
+        $result = $user->deleteUser($id);
+        if($result) {
+            $chatKitHandler = new ChatKitHandler();
+            $chatKitHandler->deleteUser($id);
+            echo json_encode($result);
+
+        } else {
+            http_response_code(400);
+            echo json_encode($user->msg);
+        }
+    break;
 }
 die();
 // $table     = $bodyData->table;

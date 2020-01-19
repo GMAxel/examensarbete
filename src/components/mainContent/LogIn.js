@@ -1,4 +1,4 @@
-import React, {useReducer, useContext} from 'react'
+import React, {useReducer, useContext, useState} from 'react'
 import { AuthContext } from '../../contexts/AuthContext';
 import Axios from 'axios';
 const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
@@ -11,6 +11,9 @@ const LogIn = () => {
                 password: ''
             }
     )
+    const [error, setError] = useState(false);
+    const [success, setSuccess] = useState(false);
+    
     const handleChange = (e) => {
         const name = e.target.name;
         const newValue = e.target.value;
@@ -35,6 +38,8 @@ const LogIn = () => {
         })
         .catch((error) => {
             console.log(error.response);
+            setSuccess(false);
+            setError(error.response.data);
             // Visa felet för användaren.
         })
         .finally(function () {
@@ -75,7 +80,10 @@ const LogIn = () => {
                         <button>
                             Sign In
                         </button>
-                    </li>               
+                    </li>            
+                    <li>
+                        <p>{success?'':error}</p>
+                    </li>   
                 </ul>
             </form>
         </div>
