@@ -450,6 +450,44 @@ p {
         "list list mess mess mess mess"
         "list list newMess newMess newMess newMess";
 }
+.chatBackBtn {
+    display:none;
+}
+@media screen and (max-width: 850px) {
+    .inChatRoom {
+        grid-template-areas: 
+        "btn messH messH messH messH messH"
+        "mess mess mess mess mess mess"
+        "newMess newMess newMess newMess newMess newMess";
+    }
+    .inChatRoom > .userList {
+        display:none;
+    }
+    .inChatRoom > .listHeader {
+        display:none;
+    }
+    .inChatRoom > .chatBackBtn {
+        grid-area:btn;
+        background-color: #ededed;
+        border:none;
+        border-right: 1px solid #cfcece;
+        box-sizing: border-box;
+        height:100%;
+        display:block;
+    
+    }
+    .inChatRoom > .chatBackBtn > img{
+        width:45%;
+    
+    }
+    .notInChatRoom > .chatBackBtn{
+        display:none;
+    }
+
+    
+    
+    
+}
 .userList {
     grid-area:list;
     background-color: #fefefe;
@@ -462,7 +500,8 @@ p {
     
 }
     .userList > .userListItem {
-        height:100px;
+        min-height:100px;
+        height:contain;
         box-sizing: border-box;
         border-bottom:1px solid #e0e0e0;
         cursor: pointer;
@@ -471,9 +510,21 @@ p {
         grid-template-columns: 1fr 2fr 8fr 2fr;
         grid-template-rows: 1fr 1fr 1fr;
         grid-template-areas: 
-        ". name name time"
-        ". lastMsg lastMsg time"
-        ". lastMsg lastMsg .";
+        "name name name time"
+        "name name name time"
+        "name name name .";
+    }
+    @media screen and (max-width: 850px) {
+    
+        .userList > .userListItem {
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            grid-template-areas: 
+            "name name time"
+            "name name name"
+            "name name name";
+        }
+    
     }
         .userList > .userListItem > .fullName {
             grid-area:name;
@@ -486,6 +537,7 @@ p {
         .userList > .userListItem > .timeStamp {
             grid-area:time;
         }
+
 
 
 .messages {

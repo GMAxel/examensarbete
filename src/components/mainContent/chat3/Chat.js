@@ -7,19 +7,21 @@ import MessageList from './MessageList'
 import ListHeader from './ListHeader'
 import MessageHeader from './MessageHeader'
 import NewMessage from './NewMessage'
+import backBtn from './backBtn.png'
 
 const Chat = (props) => {
     
     const [roomId, setRoomId] = useState(null);
     const [messages, setMessages] = useState([]);
     const [rooms, setRooms] = useState([]);
-    const [user, setUser] = useState();
     const {userData} = useContext(AuthContext);
 
+    // let user;
+    const [user, setUser] = useState(null);
     useEffect(() => {
+        let c_user;
         const newRoom = props.location.search ? props.location.search.substr(1) :
             null;
-        console.log(newRoom);
         if (userData.isAuthenticated) {
             const chatManager = new ChatManager({
                 instanceLocator: instanceLocator,
@@ -30,9 +32,10 @@ const Chat = (props) => {
             })
             chatManager.connect()
                 .then(currentUser => {
+                    console.log('nu subar vi på user')
+                    c_user = currentUser;
                     setUser(currentUser);
                     setRooms(currentUser.rooms);
-                    console.log(currentUser.rooms);
                     if (newRoom !== null) {
                         setRoomId(newRoom);
                     }
@@ -43,16 +46,19 @@ const Chat = (props) => {
                 })
         }
         return ( () => {
-            user && user.disconnect();
+            console.log(c_user);
+            console.log('nu unsubar vi på user')
+            c_user && c_user.disconnect();
         })
     }, [userData])
 
     useEffect(() => {
-        console.log('Nu körs jag(useEffect)')
+        console.log('rumsid:', roomId);
+        console.log('user:', user);
 
         if (roomId !== null) {
-            console.log(roomId)
             setMessages([]);
+            console.log('subscribe to room')
             user.subscribeToRoom({
                     roomId: roomId,
                     messageLimit: 20, // default === 20
@@ -60,15 +66,13 @@ const Chat = (props) => {
                         onMessage: (message) => {
                             if(message.roomId !== roomId) {
                                 console.log(roomId);
+                                return false;
                             }
                             setMessages(prevMessages => {
                                 return prevMessages.concat(message)
                             })
                         }
                     }
-                })
-                .then(room => {
-                    setRoomId(room.id)
                 })
                 .catch(err => console.log('error on subscribing to room: ', err))
         }
@@ -78,8 +82,16 @@ const Chat = (props) => {
     }, [roomId])
 
     const handleClick = (roomId) => {
+        console.log(roomId);
         setRoomId(roomId)
     }
+
+    // const backToChat = () => {
+    //     setRoomId(null)
+    //     setMessages([]);
+    //     // props.history.push('/chat');
+
+    // }
 
     const sendMessage = (text) => {
         user.sendMessage({
@@ -87,18 +99,18 @@ const Chat = (props) => {
             roomId: roomId
         })
     }
-    const createRoom = (id) => {
-        user.createRoom({
-                private: true,
-                addUserIds: [id]
-            })
-            .then(room => user.subscribeToRoom(room.id))
-            .catch(err => console.log('error with createRoom: ', err))
-    }
+
+    const inChatRoom = roomId ? 'inChatRoom'
+    : 'notInChatRoom'
 
     return (
         <div className="mainContentStyle">
-            <div className='chat'>
+            <div className={'chat ' + inChatRoom}>
+
+                <button onClick={() => console.log('hej')} className='chatBackBtn'>
+                    <img src={backBtn}/>
+                </button>
+                
                 <ListHeader />
                 <UserList users={rooms} userData={userData} handleClick={handleClick}/>
                 <MessageHeader name={roomId}/>
