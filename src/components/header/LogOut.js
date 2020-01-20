@@ -5,7 +5,12 @@ const LogOut = () => {
     const {onLogOut, userData} = useContext(AuthContext)   
     return (
         <div className="logOut">
-            {userData.isAuthenticated && <button onClick={onLogOut}>Logga ut</button>}
+            {userData.isAuthenticated && 
+                <button 
+                    className='logOutBtn' 
+                    onClick={onLogOut}>
+                        Log Out
+                    </button>}
         </div>
     )
 }
