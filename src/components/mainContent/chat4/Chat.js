@@ -47,13 +47,14 @@ const Chat = (props) => {
     }, [])
 
 
-    const subscribeToRoom = async (clicked_room_id) => {
+    const subscribeToRoom = async (clicked_room_id = null) => {
         if(clicked_room_id === roomId) {
             return;
         }
         if(roomId !== null) {
             try {
                 await userObj.current.roomSubscriptions[roomId].cancel();
+                setRoomId(null);
             } catch (e) {
                 console.log('error unsubbing to room', e);
             }
@@ -75,15 +76,15 @@ const Chat = (props) => {
                 setRoomId(room.id)
             })
             .catch(err => console.log('error on subscribing to room: ', err))
+        } else {
+            setMessages([]);    
+            setRoomId(null)
+            console.log(userObj.current.roomSubscriptions)
         } 
     }
 
-    
-
     const backToChat = () => {
-        setRoomId(null)
-        setMessages([]);
-        // props.history.push('/chat');
+        subscribeToRoom()
     }
 
     const sendMessage = (text) => {
@@ -95,12 +96,11 @@ const Chat = (props) => {
 
     const inChatRoom = roomId ? 'inChatRoom'
     : 'notInChatRoom'
-
     return (
         <div className="mainContentStyle">
             <div className={'chat ' + inChatRoom}>
 
-                <button className='chatBackBtn'>
+                <button onClick={backToChat} className='chatBackBtn'>
                     <img src={backBtn}/>
                 </button>
                 

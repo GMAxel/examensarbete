@@ -480,11 +480,24 @@ p {
         width:45%;
     
     }
+    .notInChatRoom {
+        grid-template-areas: 
+        "listH listH listH listH listH listH"
+        "list list list list list list"
+        "list list list list list list";
+    }
     .notInChatRoom > .chatBackBtn{
         display:none;
     }
-
-    
+    .notInChatRoom > .messages{
+        display:none;
+    }
+    .notInChatRoom > .newMessage{
+        display:none;
+    }  
+    .notInChatRoom > .messageHeader{
+        display:none;
+    }  
     
     
 }
