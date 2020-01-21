@@ -98,6 +98,7 @@ const Chat = (props) => {
     : 'notInChatRoom'
     return (
         <div className="mainContentStyle">
+            {console.log(inChatRoom)}
             <div className={'chat ' + inChatRoom}>
 
                 <button onClick={backToChat} className='chatBackBtn'>

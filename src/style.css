@@ -498,8 +498,35 @@ p {
     .notInChatRoom > .messageHeader{
         display:none;
     }  
-    
-    
+}
+@media screen and (max-width: 500px) {
+    /* .inChatRoom > .chatBackBtn > img {
+        width:100%;
+    } */
+}
+@media screen and (max-width: 500px) {
+    .inChatRoom {
+        grid-template-rows: 2fr 10fr 1fr;
+        grid-template-areas: 
+        "btn btn messH messH messH messH"
+        "mess mess mess mess mess mess"
+        "newMess newMess newMess newMess newMess newMess";
+    }
+    .inChatRoom > .chatBackBtn > img {
+        width:60%;
+    }
+}
+@media screen and (max-width: 250px) {
+    .inChatRoom {
+        grid-template-rows: 2fr 10fr 1fr;
+        grid-template-areas: 
+        "btn btn btn messH messH messH"
+        "mess mess mess mess mess mess"
+        "newMess newMess newMess newMess newMess newMess";
+    }
+    .inChatRoom > .chatBackBtn > img {
+        width:100%;
+    }
 }
 .userList {
     grid-area:list;
@@ -610,6 +637,7 @@ p {
     box-sizing: border-box;
     font-weight: 700;
     text-align: center;
+    overflow:hidden;
 }
     .listHeader > p {
         position:relative;
@@ -621,6 +649,7 @@ p {
     background-color: #ededed;
     box-sizing: border-box;
     font-weight: 700;
+    overflow:hidden;
 }
     .messageHeader > p {
         position: relative;

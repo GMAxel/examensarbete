@@ -9,7 +9,7 @@ if ($method == "OPTIONS") {
     header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
     header("HTTP/1.1 200 OK");
     die();
-}
+} 
 // Get request method. (GET, POST etc).
 $request_method = strtolower($_SERVER['REQUEST_METHOD']);
 // Autoload classes.

@@ -3,10 +3,18 @@ import React from 'react';
 
 function UserList({users, userData, handleClick}) {
     const fullName = userData.firstName + ' ' + userData.lastName;
+    const secondUserName = (name) => {
+        name = name.split(' & ')
+        if(name[0] === fullName) {
+            return name[1];
+        } else {
+            return name[0]
+        }
+    }
     const returnValue = users ? 
     users && users.map((user, index) => {
         if(user.id !== userData.id) {
-            let secondUser = user.name.split(fullName);
+            let secondUser = secondUserName(user.name);
             let lastMessageTime = user.lastMessageAt?  
                 user.lastMessageAt.split('T')[1].split('Z')[0].split(':'):
                 null;
