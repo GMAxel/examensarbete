@@ -29,7 +29,7 @@ const FindUsers = (props) => {
     }, [])
     useEffect(() => {
         if(secondUser !== null && userData.isAuthenticated) {
-            Axios.post(API_PATH + '/find-users' + '/' + secondUser.id, {
+            Axios.post(`${API_PATH} '/find-users' + '/' + ${secondUser.id}`, {
                 user: {
                     id: userData.id,
                     name: userData.firstName + ' ' + userData.lastName

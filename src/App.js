@@ -11,7 +11,7 @@ import PrivateRoute from './PrivateRoute';
 import LoggedInRoute from './LoggedInRoute';
 
 import FindUsers from './components/mainContent/FindUsers2';
-import Chat from './components/mainContent/chat3/Chat.js';
+import Chat from './components/mainContent/chat4/Chat.js';
 
 
 function App() {

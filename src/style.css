@@ -545,7 +545,16 @@ p {
     background-color: #fefefe;
     display:flex;
     flex-direction: column;
+    overflow-y:auto;
+    overflow-wrap:break-word;
+    padding-left:2%;
+    padding-right:2%;
+    
 }
+    .messages > div {
+        width:contain;
+        max-width:80%;
+    }
     .messages > .user {
         align-self:flex-end;
         background-color: darkblue;

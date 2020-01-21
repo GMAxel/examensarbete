@@ -20,8 +20,7 @@ function MessageList({messages, userData}) {
                     <div 
                         className={author} 
                         key={index}
-                    >
-                        <p>{message.sender.name}</p>
+                    >   
                         <p>{message.parts[0].payload.content}</p>
                     </div>
                 )
