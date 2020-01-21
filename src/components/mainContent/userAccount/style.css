@@ -49,6 +49,13 @@
     height:5px;
     border-radius: 50%;
 }
+@media screen and (max-width: 500px) {
+    .userAccount > .interests > ul {
+        display:flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
 
 .userAccount > div > span{
     display:block;
@@ -56,7 +63,14 @@
     font-size:1.4em;
 }
 
-.userAccount > .chatBtn {
+.userAccount > .btnContainer {
+    display:flex;
+    justify-content: center;
+    width:100%;
+    flex-wrap: wrap;
+}
+
+.userAccount > .btnContainer > .chatBtn {
     border-radius:10px;
     border: solid 0.1em rgb(204, 211, 197);
     font-weight: bold;
@@ -70,6 +84,10 @@
     background-color:rgb(67, 82, 223);
     color:rgb(236, 231, 231);
     box-sizing: border-box;
+    margin-top:15px;
 
 }
-
+.userAccount > .btnContainer > .bookBtn {
+    background-color:rgb(50, 134, 95);
+    color:rgb(236, 231, 231);
+}

@@ -55,6 +55,11 @@ const UserAccount = (props) => {
             props.history.push('/login')
         }
     }
+
+    const handleBookingClick = () => {
+        console.log('boka')
+        props.history.push('/booking')
+    }
    
     
     return (
@@ -80,9 +85,15 @@ const UserAccount = (props) => {
                         })}
                     </ul>
                 </div>
-                <button className='chatBtn' onClick={handleClick}>
-                    Chatta med mig!
-                </button>
+                <div className='btnContainer'>
+                    <button className='chatBtn bookBtn' onClick={handleBookingClick}>
+                        Boka tid med mig
+                    </button>
+                    <button className='chatBtn' onClick={handleClick}>
+                        Chatta med mig
+                    </button>
+                </div>
+                
             </div>
             }
         </div>

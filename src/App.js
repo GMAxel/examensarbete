@@ -12,6 +12,8 @@ import LoggedInRoute from './LoggedInRoute';
 import FindUsers from './components/mainContent/FindUsers2';
 import Chat from './components/mainContent/chat4/Chat.js';
 import UserAccount from './components/mainContent/userAccount/UserAccount';
+import Booking from './components/mainContent/booking/Booking';
+
 
 
 function App() {
@@ -28,6 +30,7 @@ function App() {
               <PrivateRoute path="/my-account" component={MyAccount} />
               <PrivateRoute path="/chat" component={Chat} />
               <Route path="/user/:id" component={UserAccount}/>
+              <PrivateRoute path="/booking" component={Booking}/>
             </Switch>
             <Footer />
         </AuthContextProvider>
