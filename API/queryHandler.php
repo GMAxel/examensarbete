@@ -26,11 +26,11 @@ $bodyData = json_decode(file_get_contents('php://input'));
 
 
 
-
 // Get URI.
 $request_uri = $_SERVER['REQUEST_URI'];
 $request_uri = explode('/', $_SERVER['REQUEST_URI']);
 $specific_user = false; 
+
 if(isset($request_uri[7])) {
     $specific_user = filter_var($request_uri[7], FILTER_SANITIZE_STRING);
 }
@@ -141,6 +141,11 @@ switch($request_uri) {
             http_response_code(400);
             echo json_encode($user->msg);
         }
+    break;
+    case 'user':
+        // $id = $request_uri[7];
+        $result = $user->getUser($specific_user);
+        echo json_encode($result);
     break;
 }
 die();

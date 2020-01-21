@@ -144,10 +144,10 @@ class User {
         if($this->isLoggedIn) {
             $obj = (object) [
                 'id' => $userData[0]->id,
-                'firstName' => $userData[0]->firstName,
-                'lastName' => $userData[0]->lastName,
-                'username' => $userData[0]->username,
-                'description' => $userData[0]->description
+                'firstName' => $userData->firstName,
+                'lastName' => $userData->lastName,
+                'username' => $userData->username,
+                'description' => $userData->description
             ];
             return $obj;
         } else {
@@ -157,7 +157,7 @@ class User {
     }
 
     public function getUsers() {
-        $sql = "SELECT id, firstName, lastName, userName, description FROM $this->table";
+        $sql = "SELECT id, firstName, lastName, username, description FROM $this->table";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -165,11 +165,11 @@ class User {
     }
 
     public function getUser($username) {
-        $sql = "SELECT * FROM $this->table WHERE username = :username";
+        $sql = "SELECT id, firstName, lastName, username, description FROM $this->table WHERE username = :username";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':username',   $username);
         $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
         return $result;
     }
 

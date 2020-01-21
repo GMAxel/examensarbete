@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react'
 import Axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import { Link } from "react-router-dom";
+
 
 const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
@@ -67,7 +69,18 @@ const FindUsers = (props) => {
                         if(user.id !== userData.id) {
                             return (
                                 <div className='findUserItem' key={index}>
-                                        <p className='fullName'>{user.firstName + ' ' + user.lastName}</p>
+                                        <p className='fullName'>
+                                            <Link 
+                                                to={{
+                                                    pathname: `/user/${user.username}`,
+                                                    query:{user} 
+                                                }}
+                                                query={user}
+                                            >
+                                                
+                                                {user.firstName + ' ' + user.lastName}
+                                            </Link>
+                                        </p>
                                         {<p className="description">{user.description ? user.description: 'About me...'}</p>}
                                         <button className='chatBtn' onClick={() => handleClick(user)}>
                                             Chatta med mig!

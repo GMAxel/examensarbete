@@ -6,6 +6,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     const {userData} = useContext(AuthContext);
     const isLoggedIn = userData.isAuthenticated;
     const isLoading = userData.isLoading;    
+  
+
   return (
     <Route
       {...rest}
