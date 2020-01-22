@@ -126,7 +126,6 @@ switch($request_uri) {
             // byt även på chatKit. 
             $chatKitHandler = new ChatKitHandler();
         }
-
     break;
     case 'delete-account':
         $body_data = json_decode(file_get_contents('php://input'));
@@ -145,6 +144,14 @@ switch($request_uri) {
     case 'user':
         // $id = $request_uri[7];
         $result = $user->getUser($specific_user);
+        echo json_encode($result);
+    break;
+    case 'getMeetings':
+        $meetings = new Meetings();
+        $body_data = json_decode(file_get_contents('php://input'));
+        $month = $body_data->month;
+        $secondUserId = $body_data->secondUserId;
+        $result = $meetings->getMeetings($month, $secondUserId);
         echo json_encode($result);
     break;
 }

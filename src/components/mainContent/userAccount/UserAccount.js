@@ -58,7 +58,7 @@ const UserAccount = (props) => {
 
     const handleBookingClick = () => {
         console.log('boka')
-        props.history.push('/booking')
+        props.history.push('/booking?' + secondUser.id)
     }
    
     

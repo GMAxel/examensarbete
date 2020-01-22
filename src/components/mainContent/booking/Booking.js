@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import Calendar from './Calendar'
 import './style.css';
+
+
     
 const months_arr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
 'September', 'October', 'November', 'December'];
@@ -54,20 +56,16 @@ const months_arr = ['January', 'February', 'March', 'April', 'May', 'June', 'Jul
 // if(dataStructure.january.firstUser[day].map)
 
 
-const Booking = () => {
-
-    const [month, setMonth] = useState();
-    const [monthIndex, setMonthIndex] = useState();
-
-    useEffect(() => {
-        let currentMonthIndex = new Date().getMonth()
-        setMonth(months_arr[currentMonthIndex]);
-        setMonthIndex(currentMonthIndex);
-        return () => {
-        };
-    }, [])
-
+const Booking = (props) => {
+    const [month, setMonth] = useState(months_arr[new Date().getMonth()]);
+    const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
     
+    const secondUserId = props.location.search ? props.location.search.substr(1) :
+    null;
+    if(secondUserId === null) {
+        return null;
+    }
+
     const handleChange = (e) => {
         console.log(e.target.value)
         let monthName = e.target.value;
@@ -87,7 +85,7 @@ const Booking = () => {
                     )
                 })}
             </select>
-            <Calendar monthIndex={monthIndex} month={month} />
+            <Calendar secondUserId={secondUserId} monthIndex={monthIndex} month={month} />
         </div>
     )
 }

@@ -1,5 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import BookableTimes from './BookableTimes';
+import Axios from 'axios';
+
+const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 function daysInMonth(anyDateInMonth) {
     return new Date(
         anyDateInMonth.getFullYear(), 
@@ -22,22 +25,40 @@ function whichDay(month, day, year = '2020') {
 }
 
 
-const Calendar = ({month, monthIndex}) => {
+const Calendar = ({month, monthIndex, secondUserId}) => {
     const [nrOfDays, setNrOfDays] = useState();
     const [dateClicked, setDateClicked] = useState({
         month: null,
         day: null,
         dayName: null
     });
-    
-    console.log('Index Calendar: ' + monthIndex)
-    console.log('Månad Calendar: ', month)
- 
+    const [bookedTime, setBookedTime] = useState({
+        date: []
+    })
 
     useEffect(() => {
-        console.log('useeffect')
+        if(secondUserId) {
+            Axios.post(API_PATH + '/getMeetings', {
+                secondUserId,
+                month
+            })
+            .then((response) => {
+                setBookedTime(response.data)
+            })
+            .catch((error) => {
+                console.log('Error!: ', error.response);
+            })
+            .finally(function () {
+                // always executed
+            });
+            return () => {
+                
+            };
+        }
+        
+    }, [month])
+    useEffect(() => {
         if(monthIndex !== null && monthIndex !== undefined) {            
-            console.log(monthIndex);
             const nrOfDaysInMonth = daysInMonth(new Date(2020, monthIndex))
             let nrOfDaysInMonthArr = () => {
                 let returnArr = [];
@@ -61,18 +82,33 @@ const Calendar = ({month, monthIndex}) => {
             dayName
         })
     }
-
     return (
         <div className='calendar'>
             <p className="monthName">
                 {!dateClicked.month ? month : month + ' ' + dateClicked.day + ', ' + dateClicked.dayName }
-            </p>
+            </p>    
             
             {!dateClicked.month ? 
             <div className='month'> 
                 {nrOfDays && nrOfDays.map((day) => {
+                    let outDated = 'outDated';
+                    if(new Date(`${month}/${day}/2020`).setHours(0,0,0,0) <= 
+                    new Date().setHours(0,0,0,0)) {
+                        outDated+='True';
+                    } else if(bookedTime[day] && bookedTime[day].length === 5) {
+                        outDated+='True';
+                    }
+                    else {
+                        outDated+='False';
+                    }
                     return (
-                        <div className='dayContainer' key={day} onClick={() => handleClick(day, daysArr[whichDay(month, day)])}>
+                        <div 
+                        className={'dayContainer ' + outDated} 
+                        key={day} 
+                        onClick={outDated === 'outDatedFalse' ? 
+                                () => handleClick(day, daysArr[whichDay(month, day)]):
+                                () => console.log('Nope')
+                            }>
                             <div className='day'>
                                 <span className="dayNr">
                                     {day}

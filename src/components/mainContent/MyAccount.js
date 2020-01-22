@@ -3,11 +3,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import Axios from 'axios';
 const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
-const reducer = (currentState, action) => {
-    console.log(currentState, action);
-    return {...currentState, ...action}
-    // return {...currentState, }
-}
+
 const MyAccount = () => {
     const {userData, onLogIn, onLogOut} = useContext(AuthContext);
     const [userInput, dispatch] = useReducer(
