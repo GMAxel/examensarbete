@@ -73,7 +73,7 @@ const MyAccount = () => {
         });
     }
     const handleDelete = () => {
-        // if(window.confirm('Are you sure?')){
+        if(window.confirm('Are you sure?')){
             Axios.delete(API_PATH + '/delete-account', {
                 data: {
                     id: userData.id
@@ -93,9 +93,9 @@ const MyAccount = () => {
             .finally(function () {
                 // always executed
             });
-        // } else {
-        //     console.log('nej')
-        // };
+        } else {
+            console.log('nej')
+        };
     }
 
     const nameChanger = (name) => {

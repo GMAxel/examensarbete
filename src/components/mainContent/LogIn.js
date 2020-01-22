@@ -34,6 +34,7 @@ const LogIn = () => {
             }
         })
         .then((response) => {
+            console.log('logInSuccess?', response)
             onLogIn(response.data);
         })
         .catch((error) => {

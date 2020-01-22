@@ -138,12 +138,12 @@ class User {
             $this->msg = "Username or password doesn't exist";
             return false;
         } 
-        $hash = $userData[0]->password;
+        $hash = $userData->password;
         $this->isLoggedIn = password_verify($filt_password, $hash);
         
         if($this->isLoggedIn) {
             $obj = (object) [
-                'id' => $userData[0]->id,
+                'id' => $userData->id,
                 'firstName' => $userData->firstName,
                 'lastName' => $userData->lastName,
                 'username' => $userData->username,
@@ -165,7 +165,7 @@ class User {
     }
 
     public function getUser($username) {
-        $sql = "SELECT id, firstName, lastName, username, description FROM $this->table WHERE username = :username";
+        $sql = "SELECT id, firstName, lastName, username, description, password FROM $this->table WHERE username = :username";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':username',   $username);
         $stmt->execute();
