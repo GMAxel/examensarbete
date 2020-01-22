@@ -87,13 +87,13 @@ const Calendar = ({month, monthIndex, secondUserId}) => {
             <p className="monthName">
                 {!dateClicked.month ? month : month + ' ' + dateClicked.day + ', ' + dateClicked.dayName }
             </p>    
-            
             {!dateClicked.month ? 
             <div className='month'> 
                 {nrOfDays && nrOfDays.map((day) => {
                     let outDated = 'outDated';
                     if(new Date(`${month}/${day}/2020`).setHours(0,0,0,0) <= 
-                    new Date().setHours(0,0,0,0)) {
+                        new Date().setHours(0,0,0,0)) 
+                    {
                         outDated+='True';
                     } else if(bookedTime[day] && bookedTime[day].length === 5) {
                         outDated+='True';
@@ -121,7 +121,7 @@ const Calendar = ({month, monthIndex, secondUserId}) => {
                     )
                 })}
             </div>:
-            <BookableTimes month={dateClicked.month} day={dateClicked.day}/>
+            <BookableTimes bookedTime={bookedTime[dateClicked.day]} month={dateClicked.month} day={dateClicked.day}/>
             }
         </div>
     )

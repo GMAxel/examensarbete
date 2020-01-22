@@ -70,11 +70,15 @@
     height:100%;
     display: block;
     text-align: center;
-    background-color: green;
     box-sizing: border-box;
     font-size: 20px;
-    padding-top:10px;
-    
+    padding-top:10px;   
+}
+.calendar > .bookableTimes > .timeBookedTrue > .timePeriod {
+    background-color:rgb(187, 67, 67);
+}
+.calendar > .bookableTimes > .timeBookedFalse > .timePeriod {
+    background-color: green;
 }
 .calendar > .bookBtn {
     border-radius:10px;

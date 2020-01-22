@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react'
 
-const availableFrom = 6;
-const availableTo = 18;
+const availableFrom = 8;
+const availableTo = 17;
 
-const BookableTimes = ({month, day}) => {
+const BookableTimes = ({month, day, bookedTime}) => {
     const [timePeriods, setTimePeriods] = useState([]);
     const [chosenPeriod, setChosenPeriod] = useState(null);
     
-
+    console.log('bokad tid: ', bookedTime)
     useEffect(() => {
         let availableHoursArr = () => {
             let returnArr = [];
@@ -33,12 +33,26 @@ const BookableTimes = ({month, day}) => {
         <React.Fragment>
             <div className="bookableTimes">
                 {timePeriods.map((period, index) => {
+                    period[0] = (period[0] >= 10 ? period[0] : '0' + period[0])
+                    period[1] = (period[1] >= 10 ? period[1] : '0' + period[1])
+                    let timeBooked = 'timeBooked';
+                    let timeBookedBoolArr = bookedTime && bookedTime.map((time) => {
+                        console.log(time[0], period[0])
+                        if(time[0] == period[0]) {
+                            return true;
+                            timeBookedBoolArr.push(true)
+                        } else {
+                            return false
+                        }
+                    })
+                    timeBooked += timeBookedBoolArr.indexOf(true) > -1 ? 'True' : 'False'
+                    console.log(timeBookedBoolArr);
+
                     return (
-                        <div className='container' key={index} onClick={() => handleClick(period)}>
+                        <div className={'container ' + timeBooked} key={index} onClick={() => handleClick(period)}>
                             <span className="timePeriod">
                                 {
-                                    (period[0] >= 10 ? period[0] : '0' + period[0]) + '-' +
-                                    (period[1] >= 10 ? period[1] : '0' + period[1])
+                                    period[0] + '-' + period[1]
                                 }
                             </span>
                         </div>
