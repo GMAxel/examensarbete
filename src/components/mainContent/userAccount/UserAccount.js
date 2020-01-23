@@ -14,10 +14,11 @@ const UserAccount = (props) => {
     useEffect(() => {
         if(props.location.query) {
             setSecondUser(props.location.query.user)
-            console.log(secondUser);
+            console.log(props.location.query.user);
         } else {
             console.log('nada')
             const id = props.location.pathname.split('/user/')
+            console.log(id);
             Axios.get(`${API_PATH}/user/${id[1]}`, {})
             .then((response) => {
                 setSecondUser(response.data);

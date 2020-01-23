@@ -72,7 +72,7 @@ const FindUsers = (props) => {
                                         <p className='fullName'>
                                             <Link 
                                                 to={{
-                                                    pathname: `/user/${user.username}`,
+                                                    pathname: `/user/${user.id}`,
                                                     query:{user} 
                                                 }}
                                                 query={user}

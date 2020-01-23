@@ -1,0 +1,94 @@
+.month {
+    border: 4px solid black;
+    width:80%;
+    margin:auto;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.month > .dayContainer {
+    /* min-width: 160px;
+    width:contain;
+    height:50px;
+    padding:5px; */
+    flex: 1 1 180px;
+    box-sizing: border-box;
+    padding:4px;
+    height:50px;
+    background-color:#1d1e1ff5;
+    /* margin-right:20px; */
+}
+.month > .dayContainer > .day {
+    width:100%;
+    height:100%;
+    /* text-align: center; */
+    padding-left:10px;
+    padding-top:10px;
+    font-size: 20px;
+    box-sizing: border-box;
+}
+.month > .outDatedTrue > .day {
+    background-color:rgb(187, 67, 67);
+    cursor:not-allowed;
+}
+.month > .outDatedFalse > .day {
+    background-color: green;
+    cursor:pointer;
+}
+.month > .dayContainer > .day > .dayNr {
+    width:contain;
+    margin-right:10px;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.month > .dayContainer > .day > .dayName {
+    /* width:80%; */
+    display: inline-block;
+}
+@media screen and (max-width: 1000px) {
+    .month {
+        width:100%;
+    }
+    .month > .outDatedFalse {
+        height:80px;
+        flex: 1 1 25%;
+    }
+    .month > .outDatedTrue {
+        display:none;
+    }
+}
+@media screen and (max-width: 800px) {
+    .month {
+        width:100%;
+    }
+    .month > .outDatedFalse {
+        height:150px;
+        flex: 1 1 50%;
+    }
+    .month > .outDatedFalse > .day {
+        font-size: 30px;
+        padding-top:60px;
+        text-align:center;
+        padding-left:0;
+        
+
+    }
+    .month > .outDatedTrue {
+        display:none;
+    }
+    
+}
+@media screen and (max-width: 450px) {
+    .month > .outDatedFalse {
+        /* padding-top:35px;
+        text-align:center;
+        padding-left:0; */
+        flex-basis:100%;
+    }
+    
+    
+}

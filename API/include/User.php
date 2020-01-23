@@ -172,6 +172,14 @@ class User {
         $result = $stmt->fetch(PDO::FETCH_OBJ);
         return $result;
     }
+    public function getUserById($id) {
+        $sql = "SELECT id, firstName, lastName, username, description, password FROM $this->table WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id',  $id);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+        return $result;
+    }
 
     public function deleteUser($id) {
         $sql = "DELETE FROM $this->table WHERE id = :id";
@@ -181,6 +189,8 @@ class User {
         $stmt->execute();
         return $stmt->rowCount();
     }   
+
+    
 }
 
 /**

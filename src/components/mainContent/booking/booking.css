@@ -1,0 +1,116 @@
+.booking {
+    display:grid;
+    box-sizing: border-box;
+    align-content:start;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 20px 50px 15px 50px 10px 1fr 1fr;
+    grid-template-areas:
+        ". . . . . ." 
+        "bb . b b . ."
+        "bb . . . . ."
+        ". . s s . ."
+        ". . . . . ."
+        "c c c c c c"
+        "c c c c c c";
+}
+/* .monthComponent {
+    grid-template-rows: 30px 50px 20px 25px 1fr 1fr;
+    grid-template-areas:
+        ". . . . . ." 
+        ". . b b . ."
+        ". . s s . ."
+        "c c c c c c"
+        "c c c c c c";
+    align-content:start;
+}
+
+.dayComponent {
+    grid-template-rows: 30px 50px 20px 50px 10px 1fr 1fr;
+    grid-template-areas:
+        ". . . . . ." 
+        "bb . b b . ."
+        "bb . . . . ."
+        ". . s s . ."
+        ". . . . . ."
+        "c c c c c c"
+        "c c c c c c";
+    align-content:start;
+} */
+
+.booking > .monthName {
+    grid-area:b;
+    text-align: center;
+    font-size:30px;
+    margin-bottom:20px;
+    display:block;
+    width:100%;
+}
+.booking > .month {
+    grid-area: c;
+}
+
+.booking > .bookableTimes {
+    grid-area: c;
+}
+.booking > .selectMonth {
+    grid-area: s;
+}
+
+.booking > .errMsg {
+    grid-area: e;
+
+}
+.booking > .backToMonthsBtn {
+    grid-area:bb;
+    border:none;
+    box-sizing: border-box;
+    height:100%;
+    display:block; 
+    background-color: transparent;
+    cursor:pointer;
+
+}
+.booking > .backToMonthsBtn > img{
+    height:100%;
+
+}
+
+@media screen and (max-width: 850px) {
+    .booking {
+        grid-template-rows: 20px 60px 45px 70px 10px 1fr 1fr;
+        grid-template-areas:
+            ". . . . . ." 
+            "bb . . . . ."
+            "b b b b b b"
+            "s s s s s s"
+            "s s s s s s"
+            "c c c c c c"
+            "c c c c c c";
+    }
+    
+}
+@media screen and (max-width: 650px) {
+    .booking {
+        grid-template-areas:
+            ". . . . . ." 
+            "bb bb . . . ."
+            "b b b b b b"
+            "s s s s s s"
+            "s s s s s s"
+            "c c c c c c"
+            "c c c c c c";
+    }
+}
+@media screen and (max-width: 300px) {
+    .booking {
+        grid-template-rows: 20px 60px 80px 70px 10px 1fr 1fr;
+        grid-template-areas:
+            ". . . . . ." 
+            "bb bb bb bb bb bb"
+            "b b b b b b"
+            "s s s s s s"
+            "s s s s s s"
+            "c c c c c c"
+            "c c c c c c";
+    }
+}

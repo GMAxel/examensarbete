@@ -34,6 +34,23 @@ class Meetings {
         }
         return $meetings;
     }
+    public function getAllMeetings($userId) {
+        $sql = "SELECT u.firstName as firstNameUser, u.lastName as lastNameUser, 
+                su.firstName as firstNameSecondUser, su.lastName as lastNameSecondUser, 
+                m.name as month, day, st.name as startTime, et.name as endTime FROM meeting as mt
+                JOIN users as u ON u.id = mt.userId
+                JOIN users as su ON su.id = mt.secondUserId 
+                JOIN time as st ON mt.startTimeId = st.id
+                JOIN time as et ON mt.endTimeId = et.id
+                JOIN months as m ON mt.monthId = m.id
+                WHERE (mt.userId = :userId OR mt.secondUserId = :userId)
+                ORDER BY m.id ASC, day ASC, st.id ASC;";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':userId',   $userId);
+        $stmt->execute();
+        $meetings = $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $meetings;
+    }
 
     public function bookMeeting($data) {
         // (int, int, string, int, string, string)

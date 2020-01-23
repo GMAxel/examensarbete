@@ -143,7 +143,7 @@ switch($request_uri) {
     break;
     case 'user':
         // $id = $request_uri[7];
-        $result = $user->getUser($specific_user);
+        $result = $user->getUserById($specific_user);
         echo json_encode($result);
     break;
     case 'getMeetings':
@@ -173,6 +173,13 @@ switch($request_uri) {
             echo json_encode($meeting->msg);
             http_response_code(400);
         }
+    break;
+    case 'getAllMeetings':
+        $meetings = new Meetings();
+        $body_data = json_decode(file_get_contents('php://input'));
+        $userId = $body_data->id;
+        $result = $meetings->getAllMeetings($userId);
+        echo json_encode($result);
     break;
 }
 die();

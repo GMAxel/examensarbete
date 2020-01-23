@@ -13,9 +13,7 @@ import FindUsers from './components/mainContent/FindUsers2';
 import Chat from './components/mainContent/chat4/Chat.js';
 import UserAccount from './components/mainContent/userAccount/UserAccount';
 import Booking from './components/mainContent/booking/Booking';
-
-
-
+import MyMeetings from './components/mainContent/myMeetings/MyMeetings';
 function App() {
   return (
     <Router>
@@ -31,6 +29,7 @@ function App() {
               <PrivateRoute path="/chat" component={Chat} />
               <Route path="/user/:id" component={UserAccount}/>
               <PrivateRoute path="/booking" component={Booking}/>
+              <PrivateRoute path="/my-meetings" component={MyMeetings}/>
             </Switch>
             <Footer />
         </AuthContextProvider>
