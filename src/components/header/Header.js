@@ -26,8 +26,8 @@ const Header = () => {
     const privateLinks = userData.isAuthenticated ?
         <React.Fragment>
             <li onClick={handleLinkClick}><Link to="/chat">Chat</Link></li>
-            <li onClick={handleLinkClick}><Link to="/my-account">Mitt Konto</Link></li>
             <li onClick={handleLinkClick}><Link to="/my-meetings">Mina Möten</Link></li>
+            <li onClick={handleLinkClick}><Link to="/my-account">Mitt Konto</Link></li>
         </React.Fragment>
         : 
         <React.Fragment>

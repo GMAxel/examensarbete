@@ -3,7 +3,7 @@ import Axios from 'axios';
 
 const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
-const SignUp = () => {
+const SignUp = (props) => {
     const [userInput, setUserInput] = useReducer( 
         (state, newState) => ({...state, ...newState}),
             {
@@ -46,6 +46,7 @@ const SignUp = () => {
                 password: '',
                 description: ''
             })
+            props.history.push('/login')
 
         })
         .catch((error) => {

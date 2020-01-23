@@ -35,9 +35,10 @@ class Meetings {
         return $meetings;
     }
     public function getAllMeetings($userId) {
-        $sql = "SELECT u.firstName as firstNameUser, u.lastName as lastNameUser, 
+        $sql = "SELECT mt.id as id, u.firstName as firstNameUser, u.lastName as lastNameUser, 
                 su.firstName as firstNameSecondUser, su.lastName as lastNameSecondUser, 
-                m.name as month, day, st.name as startTime, et.name as endTime FROM meeting as mt
+                m.name as month, day, st.name as startTime, et.name as endTime 
+                FROM meeting as mt
                 JOIN users as u ON u.id = mt.userId
                 JOIN users as su ON su.id = mt.secondUserId 
                 JOIN time as st ON mt.startTimeId = st.id
@@ -139,6 +140,15 @@ class Meetings {
         $stmt->execute();
         $result = $stmt->fetchColumn();
         return $result;
+    }
+
+    public function deleteMeeting($id) {
+        $sql = "DELETE FROM $this->table WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $filt_id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        $stmt->bindValue(':id', $filt_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount();
     }
 }
 

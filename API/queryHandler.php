@@ -181,6 +181,20 @@ switch($request_uri) {
         $result = $meetings->getAllMeetings($userId);
         echo json_encode($result);
     break;
+    case 'delete-meeting':
+        $meetings = new Meetings();
+        $body_data = json_decode(file_get_contents('php://input'));
+        $id = $body_data->id;
+        $result = $meetings->deleteMeeting($id);
+        if($result) {
+            http_response_code(200);
+            echo json_encode($result);
+
+        } else {
+            http_response_code(400);
+            echo json_encode($user->msg);
+        }
+    break;
 }
 die();
 // $table     = $bodyData->table;

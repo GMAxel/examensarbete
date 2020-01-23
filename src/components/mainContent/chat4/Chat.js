@@ -107,7 +107,7 @@ const Chat = (props) => {
                 
                 <ListHeader />
                 <UserList users={rooms} userData={userData} handleClick={subscribeToRoom}/>
-                <MessageHeader name={roomId}/>
+                <MessageHeader />
                 <MessageList messages={messages} userData={userData} />
                 <NewMessage 
                     sendMessage={sendMessage}

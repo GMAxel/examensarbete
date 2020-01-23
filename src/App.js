@@ -30,6 +30,7 @@ function App() {
               <Route path="/user/:id" component={UserAccount}/>
               <PrivateRoute path="/booking" component={Booking}/>
               <PrivateRoute path="/my-meetings" component={MyMeetings}/>
+              <Route path='*' exact={true} component={Start} />
             </Switch>
             <Footer />
         </AuthContextProvider>
