@@ -34,5 +34,63 @@ class Meetings {
         }
         return $meetings;
     }
+
+    public function bookMeeting($data) {
+        // (int, int, string, int, string, string)
+        // (rät, rät,  fel,   rätt, fel    fel )
+        $fields = $this->db->query("SHOW COLUMNS FROM $this->table;")->fetchAll();
+        $chosenFields = [];
+        // Fields = "userId", "secondUserId", "startTimeId", "endTimeId", "monthId", "day"
+        $filteredValues = [];
+        foreach($fields as $field) {
+            $field = $field['Field'];
+            if($field !== 'id') {
+                $chosenFields[]= $field;
+                if( $field === 'userId' ||
+                    $field === 'secondUserId' ||
+                    $field === 'day') 
+                {
+                    $filteredValue = filter_var($data->$field, FILTER_SANITIZE_NUMBER_INT);
+                    $filteredValues[$field] = $filteredValue;
+                } 
+                else if($field === 'monthId' ||
+                        $field === 'startTimeId' ||
+                        $field === 'endTimeId')
+                {
+                    $field = substr($field, 0, -2);
+                    $filteredValue = filter_var($data->$field, FILTER_SANITIZE_STRING);
+                    $table = 'time';
+                    if($field === 'month') {
+                        $table = 'months';
+                    }
+                    $filteredValue = $this->getIdFromValue($table, $filteredValue);
+                    $field .= 'Id';
+                    $filteredValues[$field] = $filteredValue;
+                }
+            }
+        }
+        $implodedFields = implode(', ', $chosenFields);
+        $sql = "INSERT INTO $this->table 
+        (" . implode(', ', $chosenFields) . ") " .
+        'VALUES (:' . implode(', :' ,$chosenFields) . ')';
+        $stmt = $this->db->prepare($sql);
+        foreach($filteredValues as $key => $value) {
+            $stmt->bindValue(":$key", $value, PDO::PARAM_INT);
+        }
+        // $stmt->execute();
+
+
+        return $stmt->execute();
+        // $monthId = $this->getIdFromValue('months', $month);
+    }
+
+    public function getIdFromValue($table, $value) {
+        $sql = "SELECT id FROM $table WHERE name = :value";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':value', $value, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchColumn();
+        return $result;
+    }
 }
 

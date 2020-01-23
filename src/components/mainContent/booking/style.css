@@ -76,9 +76,11 @@
 }
 .calendar > .bookableTimes > .timeBookedTrue > .timePeriod {
     background-color:rgb(187, 67, 67);
+    cursor:not-allowed;
 }
 .calendar > .bookableTimes > .timeBookedFalse > .timePeriod {
     background-color: green;
+    cursor:pointer;
 }
 .calendar > .bookBtn {
     border-radius:10px;

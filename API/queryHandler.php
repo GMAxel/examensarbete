@@ -154,6 +154,21 @@ switch($request_uri) {
         $result = $meetings->getMeetings($month, $secondUserId);
         echo json_encode($result);
     break;
+    case 'bookMeeting':
+        $meetings = new Meetings();
+        $body_data = json_decode(file_get_contents('php://input'));
+
+        // $userId         = $body_data->userId;
+        // $secondUserId   = $body_data->secondUserId;
+        // $month          = $body_data->month;
+        // $day            = $body_data->day;
+        // $startTime      = $body_data->startTime;
+        // $endTime        = $body_data->endTime;
+
+        // $result = $meetings->bookMeeting($userId, $secondUserId, $month, $day, $startTime, $endTime);
+        $result = $meetings->bookMeeting($body_data->data);
+        echo json_encode($result);
+    break;
 }
 die();
 // $table     = $bodyData->table;

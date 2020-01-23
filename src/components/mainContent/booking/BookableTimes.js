@@ -1,13 +1,17 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
+import Axios from 'axios';
+import { AuthContext } from '../../../contexts/AuthContext';
+
+const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
 const availableFrom = 8;
 const availableTo = 17;
-
-const BookableTimes = ({month, day, bookedTime}) => {
+const BookableTimes = ({month, day, bookedTime, secondUserId}) => {
     const [timePeriods, setTimePeriods] = useState([]);
     const [chosenPeriod, setChosenPeriod] = useState(null);
-    
-    console.log('bokad tid: ', bookedTime)
+    const [timeBooked, setTimeBooked] = useState(null); 
+    const {userData} = useContext(AuthContext)
+
     useEffect(() => {
         let availableHoursArr = () => {
             let returnArr = [];
@@ -19,6 +23,7 @@ const BookableTimes = ({month, day, bookedTime}) => {
         setTimePeriods(availableHoursArr);
 
         return () => {
+            setTimePeriods(null);
         };
     }, []);
 
@@ -26,33 +31,58 @@ const BookableTimes = ({month, day, bookedTime}) => {
         setChosenPeriod(period)
     }
     const handleBooking = () => {
-        console.log(chosenPeriod);
+        Axios.post(API_PATH + '/bookMeeting', {
+            data : {
+                userId : userData.id,
+                secondUserId,
+                month,
+                startTime : chosenPeriod[0].toString(),
+                endTime   : chosenPeriod[1].toString(),
+                day: day
+            }
+        })
+        .then((response) => {
+            console.log(response.data);
+
+        })
+        .catch((error) => {
+            console.log('Error!: ', error.response);
+
+        })
+        .finally(function () {
+            
+        });
     }
 
     return (
         <React.Fragment>
             <div className="bookableTimes">
                 {timePeriods.map((period, index) => {
-                    period[0] = (period[0] >= 10 ? period[0] : '0' + period[0])
-                    period[1] = (period[1] >= 10 ? period[1] : '0' + period[1])
+                    // gjorde period[0] och 1 till nya variabler för att 
+                    // de av någon anledningn var mutable
+                    let timeFrom = (period[0] >= 10 ? period[0] : '0' + period[0]);
+                    let timeTo   = (period[1] >= 10 ? period[1] : '0' + period[1])
                     let timeBooked = 'timeBooked';
                     let timeBookedBoolArr = bookedTime && bookedTime.map((time) => {
-                        console.log(time[0], period[0])
                         if(time[0] == period[0]) {
                             return true;
-                            timeBookedBoolArr.push(true)
                         } else {
                             return false
                         }
                     })
-                    timeBooked += timeBookedBoolArr.indexOf(true) > -1 ? 'True' : 'False'
-                    console.log(timeBookedBoolArr);
-
+                    const timeBookedBool = bookedTime ? timeBookedBoolArr.indexOf(true) > -1:
+                    false; 
+                    timeBooked +=  timeBookedBool ? 'True' : 'False'
                     return (
-                        <div className={'container ' + timeBooked} key={index} onClick={() => handleClick(period)}>
+                        <div 
+                            className={'container ' + timeBooked} 
+                            key={index} 
+                            onClick={!timeBookedBool ? () => handleClick(period):
+                                    () => console.log('noppeee')}
+                        >
                             <span className="timePeriod">
                                 {
-                                    period[0] + '-' + period[1]
+                                    timeFrom + '-' + timeTo
                                 }
                             </span>
                         </div>
