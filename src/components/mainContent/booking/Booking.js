@@ -79,8 +79,8 @@ const Booking = (props) => {
         setMonth(monthName)
         setMonthIndex(monthIndex)
     }
-    const handleChosenDate = () => {
-
+    const handleChosenDate = (x) => {
+        console.log(x)
     }
 
     return (
