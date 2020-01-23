@@ -1,3 +1,7 @@
+.booking {
+    height:100%;
+    display:grid;
+}
 .calendar {
     height:100%;
 }

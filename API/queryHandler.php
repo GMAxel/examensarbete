@@ -155,9 +155,8 @@ switch($request_uri) {
         echo json_encode($result);
     break;
     case 'bookMeeting':
-        $meetings = new Meetings();
+        $meeting = new Meetings();
         $body_data = json_decode(file_get_contents('php://input'));
-
         // $userId         = $body_data->userId;
         // $secondUserId   = $body_data->secondUserId;
         // $month          = $body_data->month;
@@ -166,8 +165,14 @@ switch($request_uri) {
         // $endTime        = $body_data->endTime;
 
         // $result = $meetings->bookMeeting($userId, $secondUserId, $month, $day, $startTime, $endTime);
-        $result = $meetings->bookMeeting($body_data->data);
-        echo json_encode($result);
+        $result = $meeting->bookMeeting($body_data->data);
+        if($result) {
+            echo json_encode($result);
+            http_response_code(200);
+        } else {
+            echo json_encode($meeting->msg);
+            http_response_code(400);
+        }
     break;
 }
 die();

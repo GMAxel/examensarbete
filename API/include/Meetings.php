@@ -69,6 +69,14 @@ class Meetings {
                 }
             }
         }
+        $timeAlreadyBookedUserValues = $filteredValues;
+        $timeAlreadyBookedUserValues['userId'] = $timeAlreadyBookedUserValues['secondUserId'];
+        unset($timeAlreadyBookedUserValues['secondUserId']);
+        $timeAlreadyBooked = $this->checkIfFree($filteredValues);
+        if($timeAlreadyBooked) {
+            $this->msg = "This time has already been booked!";
+            return false;
+        } 
         $implodedFields = implode(', ', $chosenFields);
         $sql = "INSERT INTO $this->table 
         (" . implode(', ', $chosenFields) . ") " .
@@ -77,11 +85,34 @@ class Meetings {
         foreach($filteredValues as $key => $value) {
             $stmt->bindValue(":$key", $value, PDO::PARAM_INT);
         }
-        // $stmt->execute();
-
-
+        $this->msg .= "WOOOW, ";
         return $stmt->execute();
         // $monthId = $this->getIdFromValue('months', $month);
+    }
+
+    public function checkIfFree($filteredValues) {
+        $sql = "SELECT * FROM meeting as mt
+                JOIN users as u ON mt.userId = u.id
+                JOIN time as st ON mt.startTimeId = st.id
+                JOIN time as et ON mt.endTimeId = et.id
+                JOIN months as m ON mt.monthId = m.id
+                WHERE (mt.userId = :userId OR mt.secondUserId = :userId)
+                    AND m.id = :monthId
+                    AND mt.day = :day
+                    AND (mt.startTimeId = :startTimeId OR mt.endTimeId = :endTimeId)";
+
+        $stmt = $this->db->prepare($sql);
+        foreach($filteredValues as $key => $value) {
+            $stmt->bindValue(":$key", $value, PDO::PARAM_INT);
+        }
+        // $stmt->bindValue(':userId',   $userId, PDO::PARAM_INT);
+        // $stmt->bindValue(':month',   $monthId, PDO::PARAM_INT);
+        // $stmt->bindValue(':day',   $day, PDO::PARAM_INT);
+        // $stmt->bindValue(':startTimeId',   $startTimeId, PDO::PARAM_INT);
+        // $stmt->bindValue(':endTimeId',   $endTimeId, PDO::PARAM_INT);
+        $stmt->execute();
+        $booked = $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $booked;     
     }
 
     public function getIdFromValue($table, $value) {

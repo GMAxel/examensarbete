@@ -124,7 +124,12 @@ const Calendar = ({month, monthIndex, secondUserId}) => {
                     )
                 })}
             </div>:
-            <BookableTimes secondUserId={secondUserId} bookedTime={bookedTime[dateClicked.day]} month={dateClicked.month} day={dateClicked.day}/>
+            <BookableTimes 
+                secondUserId={secondUserId} 
+                bookedTime={bookedTime[dateClicked.day]} 
+                month={dateClicked.month} 
+                day={dateClicked.day}
+            />
             }
         </div>
     )

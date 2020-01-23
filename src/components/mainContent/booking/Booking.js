@@ -59,6 +59,12 @@ const months_arr = ['January', 'February', 'March', 'April', 'May', 'June', 'Jul
 const Booking = (props) => {
     const [month, setMonth] = useState(months_arr[new Date().getMonth()]);
     const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
+
+    const [dateClicked, setDateClicked] = useState({
+        month: null,
+        day: null,
+        dayName: null
+    });
     
     const secondUserId = props.location.search ? props.location.search.substr(1) :
     null;
@@ -70,26 +76,37 @@ const Booking = (props) => {
         console.log(e.target.value)
         let monthName = e.target.value;
         let monthIndex = months_arr.indexOf(e.target.value);
-
         setMonth(monthName)
         setMonthIndex(monthIndex)
-        
+    }
+    const handleChosenDate = () => {
+
     }
 
     return (
         <div className="mainContentStyle">
-            <select value={month} onChange={handleChange}>
-                {months_arr.map((month, index) => {
-                    return (
-                        <option key={index} value={month}>{month}</option>
-                    )
-                })}
-            </select>
-            <Calendar secondUserId={secondUserId} monthIndex={monthIndex} month={month} />
+            <div className="booking">
+                <select 
+                    value={month} 
+                    onChange={handleChange} 
+                    className="selectMonth"
+                >
+                    {months_arr.map((month, index) => {
+                        return (
+                            <option key={index} value={month}>{month}</option>
+                        )
+                    })}
+                </select>
+                <Calendar 
+                    handleChosenDate={handleChosenDate}
+                    secondUserId={secondUserId} 
+                    monthIndex={monthIndex} 
+                    month={month} 
+                />
+            </div>
         </div>
     )
 }
-
 export default Booking;
 
 // <p key={index}>

@@ -9,7 +9,6 @@ const availableTo = 17;
 const BookableTimes = ({month, day, bookedTime, secondUserId}) => {
     const [timePeriods, setTimePeriods] = useState([]);
     const [chosenPeriod, setChosenPeriod] = useState(null);
-    const [timeBooked, setTimeBooked] = useState(null); 
     const {userData} = useContext(AuthContext)
 
     useEffect(() => {
@@ -77,7 +76,7 @@ const BookableTimes = ({month, day, bookedTime, secondUserId}) => {
                         <div 
                             className={'container ' + timeBooked} 
                             key={index} 
-                            onClick={!timeBookedBool ? () => handleClick(period):
+                            onClick={!timeBookedBool ? () => handleClick([timeFrom, timeTo]):
                                     () => console.log('noppeee')}
                         >
                             <span className="timePeriod">
@@ -91,14 +90,12 @@ const BookableTimes = ({month, day, bookedTime, secondUserId}) => {
             </div>
             {chosenPeriod && 
             <p className="chosenTime">
-                 Vald Tid: {(chosenPeriod[0] >= 10 ? chosenPeriod[0] : '0' + chosenPeriod[0]) + '-' +
-                            (chosenPeriod[1] >= 10 ? chosenPeriod[1] : '0' + chosenPeriod[1])}
+                 Vald Tid: {chosenPeriod[0]}-{chosenPeriod[1]}
             </p>
             }
             <button className='bookBtn' onClick={handleBooking}>
                 Boka tid med mig
-            </button>
-            
+            </button>            
         </React.Fragment>
         
     )
