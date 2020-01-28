@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react'
 import Axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import { Link } from "react-router-dom";
+
 
 const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
 
@@ -10,10 +12,11 @@ const FindUsers = (props) => {
     const {userData} = useContext(AuthContext);
 
     useEffect(() => {
-        Axios.get(API_PATH + '/chat', {})
+        Axios.get(API_PATH + '/find-users', {})
         .then((response) => {
             // x = response.data;
-            setUsers(response.data.body)
+            setUsers(response.data)
+            console.log(response.data);
         })
         .catch((error) => {
             console.log(error.response);
@@ -28,9 +31,7 @@ const FindUsers = (props) => {
     }, [])
     useEffect(() => {
         if(secondUser !== null && userData.isAuthenticated) {
-            const abortController = new AbortController();
-
-            Axios.post(API_PATH + '/chat' + '/' + secondUser.id, {
+            Axios.post(`${API_PATH}/find-users/${secondUser.id}`, {
                 user: {
                     id: userData.id,
                     name: userData.firstName + ' ' + userData.lastName
@@ -38,43 +39,53 @@ const FindUsers = (props) => {
                 },
                 secondUser : {
                     id: secondUser.id,
-                    name: secondUser.name
+                    name: secondUser.firstName + ' ' + secondUser.lastName
                 }
             })
             .then((response) => {
-                console.log(response)
-                console.log(props);
+                console.log('RESPONS: ', response)
                 props.history.push('/chat?' + response.data);
             })
             .catch((error) => {
-                console.log(error.response);
+                console.log(error);
                 // Visa felet för användaren.
             })
-            return() => {
-                abortController.abort();
-            }
+        } else if(secondUser !== null && !userData.isAuthenticated) {
+            props.history.push('/login')
         }
     }, [secondUser]);
         
     const handleClick = (secondUser) => {
-        console.log(secondUser)
+        console.log(secondUser);
         setSecondUser(secondUser)
     }
 
 
+
     return (
         <div className="mainContentStyle">
-            <h4>Click on user to start chatting with them!</h4>
-                <div className='userList'>
-                    {users.map((user, index) => {
+                <div className='findUsers'>
+                    {users && users.filter(user => user.id !== userData.id)
+                    .map((user, index) => {
                         return (
-                            // <Link className='userListItem' to={"/chat?" + user.id}>
-                            <div className='userListItem' key={index} onClick={() => handleClick(user)}>
-                                    <p className='fullName'>{user.name}</p>
-                                    <p className='lastMessage'>Helt galen ka....</p>
-                                    <p className="timeStamp">10:00</p>
+                            <div className='findUserItem' key={index}>
+                                    <p className='fullName'>
+                                        <Link 
+                                            to={{
+                                                pathname: `/user/${user.id}`,
+                                                query:{user} 
+                                            }}
+                                            query={user}
+                                        >
+                                            
+                                            {user.firstName + ' ' + user.lastName}
+                                        </Link>
+                                    </p>
+                                    {<p className="description">{user.description ? user.description: 'About me...'}</p>}
+                                    <button className='chatBtn' onClick={() => handleClick(user)}>
+                                        Chatta med mig!
+                                    </button>
                             </div>
-                            // /* </Link> */
                         )
                     })}
                 </div>
