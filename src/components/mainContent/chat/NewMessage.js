@@ -1,7 +1,7 @@
 
 import React, {useState} from 'react';
 
-function NewMessage({sendMessage}) {
+function NewMessage({sendMessage, disabled}) {
 
     const [message, setMessage] = useState('');
 
@@ -21,8 +21,9 @@ function NewMessage({sendMessage}) {
             placeholder="Skriv ett meddelande..."
             value={message}
             onChange={handleChange}
+            disabled={disabled}
         />
-        <button onClick={handleClick}>
+        <button disabled={disabled} onClick={handleClick}>
             Skicka
         </button>
         </form>

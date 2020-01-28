@@ -47,7 +47,7 @@ const Header = () => {
                     onClick={handleClick}
                     className={"menuButton " + buttonClass}
                 >
-                    <img src={menuButton}/>
+                    <img src={menuButton} alt="menu button"/>
                 </button>
                 <ul onClick={handleLinkClick} className={'menuList ' + menuClass}>
                     <li onClick={handleLinkClick} className="logoLi"><h1 className={logoClass}> Tipline</h1></li>

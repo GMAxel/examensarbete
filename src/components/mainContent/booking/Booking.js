@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import Calendar from './Calendar'
 import {monthsArr} from './PureFunctions'
 import BookableTimes from './BookableTimes';
 import SelectMonth from './SelectMonth'
 import './booking.css';
-import backBtn from '../chat4/backBtn.png';
+import backBtn from '../chat/backBtn.png';
 
 
 const Booking = (props) => {
@@ -83,7 +83,7 @@ const Booking = (props) => {
                             currentMonth={currentMonth} 
                         />
                         <button onClick={() => goBackStep(whichComponent)} className='backToMonthsBtn'>
-                            <img src={backBtn}/>
+                            <img alt="go back one step" src={backBtn}/>
                         </button>
                     </React.Fragment>
                     :
@@ -98,7 +98,7 @@ const Booking = (props) => {
                             onClick={() => goBackStep(whichComponent)} 
                             className='backToMonthsBtn'
                         >
-                            <img src={backBtn}/>
+                            <img alt="go back one step" src={backBtn}/>
                         </button>
                     </React.Fragment>
                 }

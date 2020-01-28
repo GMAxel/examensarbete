@@ -9,9 +9,9 @@ function MessageList({messages, userData}) {
     } 
     return (
         <div className='messages'>
-            {messages && messages.map((message, index) => {
+            { messages.map((message, index) => {
                 var author;
-                if(message.user_id === userData.id) {
+                if(message.senderId === userData.id) {
                     author = 'user'
                 } else {
                     author = 'otherUser'
@@ -20,8 +20,8 @@ function MessageList({messages, userData}) {
                     <div 
                         className={author} 
                         key={index}
-                    >
-                        <p>{message.parts[0].content}</p>
+                    >   
+                        <p>{message.parts[0].payload.content}</p>
                     </div>
                 )
                 }

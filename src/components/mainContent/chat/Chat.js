@@ -1,77 +1,118 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
+import { ChatManager, TokenProvider } from '@pusher/chatkit-client'
+import { tokenUrl, instanceLocator } from './config'
 import { AuthContext } from '../../../contexts/AuthContext'
-import Axios from 'axios';
-import './resources/App.css';
-import MessageList from './MessageList';
-import UserList from './UserList';
-import MessageHeader from './MessageHeader';
-import NewMessage from './NewMessage';
-import ListHeader from './ListHeader';
+import UserList from './UserList'
+import MessageList from './MessageList'
+import ListHeader from './ListHeader'
+import MessageHeader from './MessageHeader'
+import NewMessage from './NewMessage'
+import backBtn from './backBtn.png'
 
-const API_PATH = 'http://localhost/wies/examensarbete/examensarbete/api/queryHandler.php'
-
-
-const Chat = () => {
-    const [users, setUsers] = useState(null);
-    const [secondUser, setSecondUser] = useState(null);
-    const [messages, setMessages] = useState(null);
+const Chat = (props) => {
+    
+    const [roomId, setRoomId] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [rooms, setRooms] = useState([]);
     const {userData} = useContext(AuthContext);
+    const userObj = useRef(null);
 
     useEffect(() => {
-        console.log('useeffect körs')
-        Axios.get(API_PATH + '/chat' , {
-            
+        const newRoom = props.location.search ? props.location.search.substr(1) :
+            null;
+        if (userData.isAuthenticated) {
+            const chatManager = new ChatManager({
+                instanceLocator: instanceLocator,
+                userId: userData.id,
+                tokenProvider: new TokenProvider({
+                    url: tokenUrl
+                })
+            })
+            chatManager.connect()
+                .then(currentUser => {
+                    console.log('nu subar vi på user')
+                    userObj.current = currentUser;
+                    setRooms(currentUser.rooms);
+                    if (newRoom !== null) {
+                        subscribeToRoom(newRoom);
+                    }
+                })          
+                .catch(err => {
+                    console.log('Error on connection', err)
+                })
+        }
+        return ( () => {
+            userObj.current && userObj.current.disconnect();
         })
-        .then((response) => {
-            setUsers(response.data.body)
-            console.log(response)
-        })
-        .catch((error) => {
-            console.log(error.response);
-            // Visa felet för användaren.
-        })
-    }, []);
-    useEffect(() => {
-        if(secondUser !== null) {
-            Axios.post(API_PATH + '/chat' + '/' + secondUser.id, {
-                user: {
-                    id: userData.id,
-                    name: userData.firstName + ' ' + userData.lastName
+    }, [])
 
-                },
-                secondUser : {
-                    id: secondUser.id,
-                    name: secondUser.name
+
+    const subscribeToRoom = async (clicked_room_id = null) => {
+        if(clicked_room_id === roomId) {
+            return;
+        }
+        if(roomId !== null) {
+            try {
+                await userObj.current.roomSubscriptions[roomId].cancel();
+                setRoomId(null);
+            } catch (e) {
+                console.log('error unsubbing to room', e);
+            }
+        }
+        if (clicked_room_id !== null) {
+            setMessages([]);
+            await userObj.current.subscribeToRoomMultipart({
+                roomId: clicked_room_id,
+                messageLimit: 20, // default === 20
+                hooks: {
+                    onMessage: (message) => {
+                        setMessages(prevMessages => {
+                            return prevMessages.concat(message)
+                        })
+                    }
                 }
             })
-            .then((response) => {
-                console.log(response)
-                setMessages(response.data.body)
+            .then(room => {
+                setRoomId(room.id)
             })
-            .catch((error) => {
-                console.log(error.response);
-                // Visa felet för användaren.
-            })
-        }
-    }, [secondUser]);
-    
-    const sendMessage = (message) =>  {
-        console.log(message);
+            .catch(err => console.log('error on subscribing to room: ', err))
+        } else {
+            setMessages([]);    
+            setRoomId(null)
+            console.log(userObj.current.roomSubscriptions)
+        } 
     }
-        
-    const handleClick = (user) => {
-        console.log(user)
-        setSecondUser(user);
+
+    const backToChat = () => {
+        subscribeToRoom()
     }
-    const activeChat = secondUser ? secondUser.name : '';
+
+    const sendMessage = (text) => {
+        userObj.current.sendMessage({
+            text,
+            roomId: roomId
+        })
+    }
+
+    const inChatRoom = roomId ? 'inChatRoom'
+    : 'notInChatRoom'
     return (
         <div className="mainContentStyle">
-            <div className='chat'>
+            {console.log(inChatRoom)}
+            <div className={'chat ' + inChatRoom}>
+
+                <button onClick={backToChat} className='chatBackBtn'>
+                    <img alt="go back one step" src={backBtn}/>
+                </button>
+                
                 <ListHeader />
-                <UserList users={users} userData={userData} handleClick={handleClick} />
-                <MessageHeader name={activeChat}/>
+                <UserList users={rooms} userData={userData} handleClick={subscribeToRoom}/>
+                <MessageHeader />
                 <MessageList messages={messages} userData={userData} />
-                <NewMessage sendMessage={sendMessage}/>
+                <NewMessage 
+                    sendMessage={sendMessage}
+                    disabled={!roomId}
+                />
             </div>
         </div>
     )

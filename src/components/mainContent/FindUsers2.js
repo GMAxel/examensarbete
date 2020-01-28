@@ -65,30 +65,29 @@ const FindUsers = (props) => {
     return (
         <div className="mainContentStyle">
                 <div className='findUsers'>
-                    {users && users.map((user, index) => {
-                        if(user.id !== userData.id) {
-                            return (
-                                <div className='findUserItem' key={index}>
-                                        <p className='fullName'>
-                                            <Link 
-                                                to={{
-                                                    pathname: `/user/${user.id}`,
-                                                    query:{user} 
-                                                }}
-                                                query={user}
-                                            >
-                                                
-                                                {user.firstName + ' ' + user.lastName}
-                                            </Link>
-                                        </p>
-                                        {<p className="description">{user.description ? user.description: 'About me...'}</p>}
-                                        <button className='chatBtn' onClick={() => handleClick(user)}>
-                                            Chatta med mig!
-                                            </button>
-                                </div>
-                            )
-                        }}
-                    )}
+                    {users && users.filter(user => user.id !== userData.id)
+                    .map((user, index) => {
+                        return (
+                            <div className='findUserItem' key={index}>
+                                    <p className='fullName'>
+                                        <Link 
+                                            to={{
+                                                pathname: `/user/${user.id}`,
+                                                query:{user} 
+                                            }}
+                                            query={user}
+                                        >
+                                            
+                                            {user.firstName + ' ' + user.lastName}
+                                        </Link>
+                                    </p>
+                                    {<p className="description">{user.description ? user.description: 'About me...'}</p>}
+                                    <button className='chatBtn' onClick={() => handleClick(user)}>
+                                        Chatta med mig!
+                                    </button>
+                            </div>
+                        )
+                    })}
                 </div>
                 
         </div>

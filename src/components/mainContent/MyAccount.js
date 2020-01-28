@@ -18,7 +18,6 @@ const MyAccount = () => {
     const [errorMessage, setErrorMessage] = useState();
     const [success, setSuccess] = useState(null);
 
-    
     const handleChange = (e) => {
         console.log(e.target.value)
         dispatch({[e.target.name]: e.target.value})
@@ -26,13 +25,11 @@ const MyAccount = () => {
     const handleClick = (e) => {
         e.preventDefault();
         let newValues = {}
-        Object.keys(userInput).map((inputName) => {
-            // console.log(inputName, userInput[inputName])
-            if(inputName !== 'password') {
-                if(userInput[inputName] !== userData[inputName]) {
-                    newValues[inputName] = userInput[inputName];
-                }
-            }
+        Object.keys(userInput).filter(inputName => {
+            return inputName !== 'password' && userInput[inputName] !== userData[inputName]
+        })
+        .map((inputName) => {
+            return newValues[inputName] = userInput[inputName];
         })
         if (userInput.password.length !== 0 &&
             userInput.password.length < 6) {

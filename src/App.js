@@ -10,7 +10,7 @@ import AuthContextProvider  from './contexts/AuthContext';
 import PrivateRoute from './PrivateRoute';
 import LoggedInRoute from './LoggedInRoute';
 import FindUsers from './components/mainContent/FindUsers2';
-import Chat from './components/mainContent/chat4/Chat.js';
+import Chat from './components/mainContent/chat/Chat.js';
 import UserAccount from './components/mainContent/userAccount/UserAccount';
 import Booking from './components/mainContent/booking/Booking';
 import MyMeetings from './components/mainContent/myMeetings/MyMeetings';

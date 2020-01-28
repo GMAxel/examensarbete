@@ -1,9 +1,9 @@
 import React from 'react';
 
-function MessageHeader({name}) {
+function MessageHeader() {
   return (
     <div className='messageHeader'>
-        <p>{name}</p>
+        <p>{'Konversation'}</p>
     </div>
   )
 }
