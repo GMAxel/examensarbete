@@ -1,4 +1,4 @@
-School project in which you can create an account and chat with other people, as well as schedule appointments with them.
+<h1>School project in which you can create an account and chat with other people, as well as schedule appointments with them.</h1>
 
 
 ### `npm start`
